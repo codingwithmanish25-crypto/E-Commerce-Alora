@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Ritual | Daily Radiance Cream</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#152219',
+                        'ink-light': '#1F3327',
+                        parchment: '#F7F2E7',
+                        clay: '#A24C3D',
+                        'clay-light': '#C97E63',
+                        'clay-dark': '#7E3A2F',
+                        sage: '#6C8763',
+                        'sage-light': '#E7ECDF',
+                        gold: '#BB9556',
+                        ash: '#6B685F',
+                    },
+                    fontFamily: {
+                        serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+                        sans: ['Manrope', 'ui-sans-serif', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-parchment text-[#2A2A24] antialiased font-sans">
+
+    <!-- ============ NAV (matches index.html) ============ -->
+     <nav class="bg-ink text-parchment sticky top-0 z-50 border-b border-gold/20">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <div class="flex items-center justify-between w-full md:w-auto">
+            <span class="text-xl font-serif italic font-semibold tracking-wide flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-gold/15 border border-gold/40 flex items-center justify-center">
+                    <i class="fa-solid fa-leaf text-gold text-sm"></i>
+                </span>
+                Glow Ritual
+            </span>
+            <button id="menu-btn" class="md:hidden text-xl text-parchment/80 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        
+        <div class="flex flex-1 max-w-md mx-4 w-full relative">
+            <input type="text" placeholder="Search products…" class="w-full px-4 py-2 rounded-l-md bg-ink-light text-parchment placeholder:text-parchment/40 text-sm focus:outline-none focus:ring-1 focus:ring-gold/50 border border-white/5">
+            <button class="bg-clay hover:bg-clay-dark transition px-4 rounded-r-md text-sm font-medium">Search</button>
+        </div>
+        
+        <div class="hidden md:flex items-center gap-7 text-[13px] font-medium tracking-wide uppercase text-parchment/85">
+            <ul class="flex gap-6">
+                <li><a href="./index.html" class="hover:text-gold transition">Home</a></li>
+                <li><a href="./moreproduct.html" class="hover:text-gold transition">Shop</a></li>
+                <li class="relative group">
+                    <a href="#" class="hover:text-gold transition flex items-center gap-1">
+                        Skin &amp; Body
+                        <svg class="w-3 h-3 transform group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </a>
+                    <ul class="absolute left-0 mt-2 w-48 bg-white border border-gray-100 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition">Facial Care</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition">Body Lotions</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition">Sun Protection</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="hover:text-gold transition">Hair Care</a></li>
+            </ul>
+            <div class="flex items-center gap-5 ml-2 normal-case">
+                <a href="./cart.html" class="relative text-base"><i class="fa-solid fa-shopping-cart"></i><span class="absolute -top-2 -right-2 bg-clay text-[10px] leading-none px-1.5 py-1 rounded-full">0</span></a>
+                <a href="./login.html" class="text-base"><i class="fa-solid fa-user"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-ink-light border-t border-gold/10 px-4 py-4 text-sm font-medium uppercase tracking-wide">
+        <ul class="flex flex-col gap-4">
+            <li><a href="#" class="block hover:text-gold transition py-1">Home</a></li>
+            <li><a href="./moreproduct.html" class="block hover:text-gold transition py-1">Shop</a></li>
+            
+            <li>
+                <button id="mobile-dropdown-btn" class="w-full flex justify-between items-center hover:text-gold transition py-1 uppercase tracking-wide text-left">
+                    Skin &amp; Body
+                    <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
+                </button>
+                <ul id="mobile-dropdown-menu" class="hidden pl-4 mt-2 flex flex-col gap-2 normal-case text-parchment/70 border-l border-gold/20">
+                    <li><a href="#" class="block hover:text-gold py-1">Facial Care</a></li>
+                    <li><a href="#" class="block hover:text-gold py-1">Body Lotions</a></li>
+                    <li><a href="#" class="block hover:text-gold py-1">Sun Protection</a></li>
+                </ul>
+            </li>
+            
+            <li><a href="#" class="block hover:text-gold transition py-1">Hair Care</a></li>
+        </ul>
+        <div class="flex items-center gap-6 mt-6 pt-4 border-t border-white/5 normal-case text-lg">
+            <a href="./cart.html" class="relative"><i class="fa-solid fa-shopping-cart"></i><span class="absolute -top-2 -right-2 bg-clay text-[10px] leading-none px-1.5 py-1 rounded-full">0</span></a>
+            <a href="./login.html"><i class="fa-solid fa-user"></i> Account</a>
+        </div>
+    </div>
+</nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <nav class="flex text-sm text-ash gap-2">
+            <a href="./index.html" class="hover:text-clay transition">Home</a>
+            <span>/</span>
+            <span class="text-ink font-medium">Glow Ritual</span>
+        </nav>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-[#ECE4CE]">
+
+            <div class="flex flex-col gap-4">
+               <div class="imagesection bg-[#F4F1FA] rounded-2xl flex justify-center items-center h-[400px] overflow-hidden border border-[#E7DFC7]">
+                   <img id="main-product-image" src="./static/alora_image1-removebg-preview.png" alt="Glow Ritual Cream" class="h-full w-auto object-contain transition-transform duration-300 hover:scale-105">
+                </div>
+                <div class="flex gap-3 justify-center">
+                    <button onclick="changeImage('./static/face creame image.jfif')" class="w-20 h-20 bg-sage-light  rounded-lg border-2 border-clay overflow-hidden flex items-center justify-center">
+                        <img src="./static/alora image1.jpeg" class="max-h-full object-contain" alt="Thumbnail 1">
+                    </button>
+                    <button onclick="changeImage('./static/face creame image.jfif')" class="w-20 h-20 bg-sage-light  rounded-lg border border-[#DCD3BA] hover:border-clay overflow-hidden flex items-center justify-center transition">
+                        <img src="./static/alora image1.jpeg" class="max-h-full object-contain opacity-70" alt="Thumbnail 2">
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-sage/15 text-sage text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Best Seller</span>
+                        <span class="bg-gold/15 text-clay-dark text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">100% Vegan</span>
+                    </div>
+                    <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">Batch GR-014</p>
+                    <h1 class="text-2xl sm:text-3xl font-serif italic font-medium text-ink mb-3">Glow Ritual | Daily Radiance Cream</h1>
+
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="flex text-gold text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star text-[#D9D2BC]"></i>
+                        </div>
+                        <span class="text-xs text-ash font-medium">(4.0 / 5.0 out of 142 ratings)</span>
+                    </div>
+
+                    <div class="mb-6 flex items-baseline gap-3">
+                        <span id="product-price" class="text-3xl font-serif font-semibold text-ink">₹ 300</span>
+                        <span id="product-mrp" class="text-sm text-ash line-through">₹ 450</span>
+                        <span class="text-xs font-bold text-sage bg-sage-light px-2 py-1 rounded">(Save 33%)</span>
+                    </div>
+
+                    <hr class="border-[#ECE4CE] my-6">
+
+                    <p class="text-[#5C594E] text-sm leading-relaxed mb-6">
+                        Experience instant hydration and an effortless, glowing complexion. Formulated with skin-loving antioxidants and vitamin C, this daily radiance cream protects your skin barrier while bringing out your natural, inner brightness. Perfect for all skin types.
+                    </p>
+
+                    <div class="mb-6">
+                        <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Select Size</h3>
+                        <div class="flex gap-3">
+                            <button onclick="selectSize('100ml', 300, 450, this)" class="size-btn text-sm border-2 border-ink px-4 py-2 rounded-full bg-ink text-parchment font-semibold transition">
+                                100ml
+                            </button>
+                            <button onclick="selectSize('200ml', 550, 800, this)" class="size-btn text-sm border border-[#DCD3BA] px-4 py-2 rounded-full hover:border-ink text-ash font-semibold transition">
+                                200ml
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Quantity</h3>
+                        <div class="flex items-center border border-[#DCD3BA] w-32 rounded-lg overflow-hidden bg-white">
+                            <button onclick="updateQty(-1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">−</button>
+
+                            <input type="number" id="quantity" value="1" min="1" readonly class="w-12 h-10 text-center font-semibold text-ink focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+
+                            <button onclick="updateQty(1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                     <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-[250px] bg-clay hover:bg-clay-dark text-white py-3 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+                    </button>
+                    <button class="flex-1 bg-ink text-parchment py-3.5 rounded-xl font-semibold text-sm tracking-[0.1em] uppercase shadow-sm hover:bg-ink-light transition">
+                        Buy It Now
+                    </button>
+                </div>
+
+                <div class="mt-8 border-t border-[#ECE4CE] pt-4">
+                    <details class="group py-3" open>
+                        <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
+                            <span>Product Details &amp; Benefits</span>
+                            <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
+                        </summary>
+                        <p class="text-xs text-ash mt-2 leading-relaxed">
+                            Apply a dime-sized amount cleanly over your face and neck every morning. Non-greasy, fast-absorbing formula that leaves no white cast. Clinically tested for safety and sensitivity.
+                        </p>
+                    </details>
+                    <details class="group py-3 border-t border-[#ECE4CE]">
+                        <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
+                            <span>Key Ingredients</span>
+                            <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
+                        </summary>
+                        <p class="text-xs text-ash mt-2 leading-relaxed font-mono">
+                            Aqua, Vitamin C (Ascorbic Acid), Hyaluronic Acid, Shea Butter, Niacinamide, Glycerin, Sweet Almond Oil, Natural Fragrance Extracts.
+                        </p>
+                    </details>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mt-10 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-[#ECE4CE] grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+            <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-[#ECE4CE] pb-6 lg:pb-0 lg:pr-8">
+                <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">Feedback</p>
+                <h2 class="text-xl font-serif italic font-medium text-ink mb-4">Customer Reviews</h2>
+                <div class="flex items-center gap-4 mb-5">
+                    <span class="text-4xl font-serif font-semibold text-ink">4.0</span>
+                    <div>
+                        <div class="flex text-gold text-sm mb-0.5">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star text-[#D9D2BC]"></i>
+                        </div>
+                        <p class="text-xs text-ash font-medium">Based on 142 ratings</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 mb-6">
+                    <div class="flex items-center text-xs text-ash gap-2">
+                        <span class="w-10">5 star</span>
+                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[65%]"></div></div>
+                        <span class="w-8 text-right">65%</span>
+                    </div>
+                    <div class="flex items-center text-xs text-ash gap-2">
+                        <span class="w-10">4 star</span>
+                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[20%]"></div></div>
+                        <span class="w-8 text-right">20%</span>
+                    </div>
+                    <div class="flex items-center text-xs text-ash gap-2">
+                        <span class="w-10">3 star</span>
+                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[10%]"></div></div>
+                        <span class="w-8 text-right">10%</span>
+                    </div>
+                    <div class="flex items-center text-xs text-ash gap-2">
+                        <span class="w-10">2 star</span>
+                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[3%]"></div></div>
+                        <span class="w-8 text-right">3%</span>
+                    </div>
+                    <div class="flex items-center text-xs text-ash gap-2">
+                        <span class="w-10">1 star</span>
+                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[2%]"></div></div>
+                        <span class="w-8 text-right">2%</span>
+                    </div>
+                </div>
+
+                <button onclick="toggleReviewForm()" class="w-full border-2 border-ink text-ink hover:bg-ink hover:text-parchment transition font-semibold py-2.5 rounded-xl text-sm uppercase tracking-wider">
+                    Write A Review
+                </button>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+
+                <div id="review-form-box" class="hidden bg-parchment border border-[#E7DFC7] p-5 rounded-xl transition-all duration-300">
+                    <h3 class="text-md font-serif font-semibold text-ink mb-3">Share Your Feedback</h3>
+                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Review Submitted Successfully!'); toggleReviewForm();">
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-ash mb-1.5">Your Rating *</label>
+                            <div class="flex gap-2 text-xl text-[#D9D2BC]">
+                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(1)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(2)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(3)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(4)"></i>
+                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(5)"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-ash mb-1">Review Comments *</label>
+                            <textarea rows="3" required placeholder="What did you like or dislike about this cream? How does it feel on skin?"
+                                      class="w-full p-3 border border-[#DCD3BA] rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-clay"></textarea>
+                        </div>
+
+                        <div class="flex justify-end gap-3 text-xs uppercase tracking-wide">
+                            <button type="button" onclick="toggleReviewForm()" class="px-4 py-2 border border-[#DCD3BA] text-ash font-semibold rounded-lg hover:bg-[#F1EBD7]">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-clay text-white font-semibold rounded-lg hover:bg-clay-dark shadow-sm">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="space-y-6 divide-y divide-[#ECE4CE]">
+                    <div class="pt-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <div>
+                                <h4 class="text-sm font-serif font-semibold text-ink">Manish Kumar</h4>
+                                <div class="flex text-gold text-xs mt-0.5">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                            <span class="text-xs text-ash font-medium">July 02, 2026</span>
+                        </div>
+                        <p class="text-xs text-[#5C594E] leading-relaxed">
+                            This cream is totally non-sticky! It absorbs into my skin in less than a minute and leaves a clean, smooth texture without any white cast. Highly recommended for daily morning skincare.
+                        </p>
+                    </div>
+
+                    <div class="pt-4">
+                        <div class="flex justify-between items-start mb-1">
+                            <div>
+                                <h4 class="text-sm font-serif font-semibold text-ink">Nitin K.</h4>
+                                <div class="flex text-gold text-xs mt-0.5">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star text-[#D9D2BC]"></i>
+                                </div>
+                            </div>
+                            <span class="text-xs text-ash font-medium">June 28, 2026</span>
+                        </div>
+                        <p class="text-xs text-[#5C594E] leading-relaxed">
+                            Really liked the texture and fragrance. It kept my face fresh and well hydrated throughout the hot day. Container quality can be improved slightly, but product inside is premium.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </main>
+
+    <!-- ============ FOOTER (matches index.html) ============ -->
+    <footer class="bg-ink text-parchment/80 pt-16 pb-6 mt-12 border-t border-gold/20">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
+            <div>
+                <span class="text-lg font-serif italic font-semibold text-parchment flex items-center gap-2 mb-5">
+                    <i class="fa-solid fa-leaf text-gold text-sm"></i> Glow Ritual
+                </span>
+                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Company Overview</h3>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a href="#" class="hover:text-gold transition">About Our Brand</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Terms &amp; Conditions</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Corporate Governance</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Grievance Redressal</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Quick Links</h3>
+                <ul class="space-y-2.5 text-sm mb-8">
+                    <li><a href="#" class="hover:text-gold transition">Knowledge Base FAQs</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Return &amp; Refund Policy</a></li>
+                    <li><a href="#" class="hover:text-gold transition">Payment Options</a></li>
+                </ul>
+                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-3">Follow Along</h3>
+                <div class="flex gap-4 text-lg">
+                    <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
+                    <a href="https://x.com/twitt_login?lang=en" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-x-twitter text-sm"></i></a>
+                    <a href="https://www.youtube.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-youtube text-sm"></i></a>
+                    <a href="https://web.whatsapp.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                </div>
+            </div>
+
+            <div class="bg-ink-light p-6 rounded-xl border border-white/10">
+                <h3 class="text-parchment font-serif font-semibold text-lg mb-4">Get in Touch</h3>
+                <form class="space-y-3">
+                    <div>
+                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Name</label>
+                        <input type="text" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Email</label>
+                        <input type="email" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
+                    </div>
+                     <div>
+                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">MESSAGE</label>
+                        <textarea name="message" placeholder="Type your message here..." class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 fouces:ring-gold border border-white/10"></textarea>
+                    </div>
+                    <button type="button" class="w-full bg-clay hover:bg-clay-dark text-white font-semibold py-2.5 rounded-md text-xs transition tracking-[0.15em] uppercase mt-2">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center pt-6 text-xs text-parchment/40">
+            Copyright © 2026 Glow Ritual ❤️
+        </div>
+    </footer>
+
+
+    <script src="./js/product.js"></script>
+    <script src="./js/cart.js"></script>
+
+</body>
+</html>
