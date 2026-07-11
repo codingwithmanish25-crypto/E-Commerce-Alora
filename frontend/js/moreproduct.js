@@ -1,189 +1,127 @@
-    // Global Dynamic State Arrays
-let PRODUCTS_DATABASE = []; // Ab data backend se aayega
-let selectedCategories = [];
-let maxPriceConstraint = 1500;
-let ratingFloorFilter = 0;
-let activeQuickTag = 'all';
+    // Real-world dynamic item array mapping out prices, discounts, tags, categories & sizes dynamically
+    const PRODUCTS_DATABASE = [
+        { id: "p1", name: "Glow Ritual | Daily Radiance Cream", category: "skincare", isBestseller: true, rating: 4.5, baseImg: "https://images.unsplash.com/photo-1608248597481-496100c80836?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "100ml", price: 300, mrp: 450}, {ml: "200ml", price: 550, mrp: 799}] },
+        { id: "p2", name: "Hydra Burst | Water Surge Gel Cream", category: "skincare", isBestseller: false, rating: 4.8, baseImg: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "100ml", price: 420, mrp: 600}, {ml: "200ml", price: 799, mrp: 1150}] },
+        { id: "p3", name: "Silk Intense | Repair Onion Hair Mask", category: "haircare", isBestseller: true, rating: 3.9, baseImg: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "150ml", price: 299, mrp: 399}, {ml: "300ml", price: 499, mrp: 699}] },
+        { id: "p4", name: "Satin Smooth | Cocoa Butter Body Lotion", category: "bodycare", isBestseller: false, rating: 4.2, baseImg: "https://images.unsplash.com/photo-1556229174-5e42a09e45af?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "200ml", price: 250, mrp: 350}, {ml: "400ml", price: 450, mrp: 599}] },
+        { id: "p5", name: "Advanced Glow | Vitamin C Serum", category: "skincare", isBestseller: true, rating: 4.9, baseImg: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "30ml", price: 499, mrp: 699}, {ml: "50ml", price: 750, mrp: 999}] },
+        { id: "p6", name: "Root Therapy | Tea Tree Anti-Dandruff Oil", category: "haircare", isBestseller: false, rating: 3.5, baseImg: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=400&auto=format&fit=crop&q=60", sizes: [{ml: "100ml", price: 199, mrp: 299}, {ml: "200ml", price: 349, mrp: 499}] }
+    ];
 
-// Base API URL config
-const BACKEND_URL = "http://localhost:5000/api/product/all"; 
+    // Global Dynamic UI State Tracking
+    let selectedCategories = [];
+    let maxPriceConstraint = 1500;
+    let ratingFloorFilter = 0;
+    let activeQuickTag = 'all';
 
-// 1. DOM Complete initialization
-document.addEventListener("DOMContentLoaded", () => {
-    fetchProductsFromBackend();
-    syncCartCounterIcon();
-});
-
-// 2. Fetch API Engine 
-async function fetchProductsFromBackend() {
-    try {
-        const response = await fetch(BACKEND_URL);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        
-        // Backend key mapping sync check
-        // Agar backend schema fields aur keys me difference ho (jaise imagepath vs baseImg), toh yahan normalize kar rahe hain:
-        PRODUCTS_DATABASE = data.map(item => ({
-            id: item._id || item.id,
-            name: item.name,
-            category: item.category || "skincare",
-            isBestseller: item.isBestseller || false,
-            rating: Number(item.rating) || 4.0,
-            // Backend image dynamic mapping url append logic
-            baseImg: item.imagepath ? `http://localhost:5000${item.imagepath}` : 'https://images.unsplash.com/photo-1608248597481-496100c80836?w=400',
-            // Variants parsing layer checker
-            sizes: Array.isArray(item.variants) ? item.variants.map(v => ({
-                ml: v.ml || v.size,
-                price: Number(v.price),
-                mrp: Number(v.mrp || v.price * 1.2)
-            })) : [{ ml: "Standard", price: Number(item.price || 300), mrp: Number(item.mrp || 450) }]
-        }));
-
-        // Render first time snapshot
+    // Initialize App on DOM Complete
+    document.addEventListener("DOMContentLoaded", () => {
         renderProductCatalog(PRODUCTS_DATABASE);
-    } catch (err) {
-        console.error("Backend fetch error layout crash:", err);
-        document.getElementById('product-grid').innerHTML = `
-            <div class="col-span-full text-center py-12">
-                <i class="fa-solid fa-triangle-exclamation text-clay text-3xl mb-3"></i>
-                <p class="text-ash font-medium">Failed to load dynamic catalogs. Please check backend connection.</p>
-            </div>`;
-    }
-}
-
-// 3. Loop Array Template Component Renderer Engine
-function renderProductCatalog(products) {
-    const gridContainer = document.getElementById('product-grid');
-    const noProductsPlaceholder = document.getElementById('no-products');
-    
-    if (!gridContainer) return;
-
-    if (products.length === 0) {
-        gridContainer.innerHTML = "";
-        if (noProductsPlaceholder) noProductsPlaceholder.classList.remove('hidden');
-        document.getElementById('results-count').innerText = `0 Products Found`;
-        return;
-    }
-    
-    if (noProductsPlaceholder) noProductsPlaceholder.classList.add('hidden');
-    document.getElementById('results-count').innerText = `Showing ${products.length} products`;
-
-    gridContainer.innerHTML = products.map(product => {
-        const initialSize = product.sizes[0];
-        return `
-        <div data-id="${product.id}" class="product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden">
-
-            <div class="border-b border-dashed border-[#E3D9BC] px-4 pt-3 pb-2 flex items-center justify-between">
-                <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-clay">${product.isBestseller ? '<i class="fa-solid fa-fire mr-1"></i>Bestseller' : `Batch GR-${String(product.id).slice(-3)}`}</span>
-                <div class="flex text-gold text-[11px]">
-                    ${generateStarsHTML(product.rating)}
-                </div>
-            </div>
-
-            <div class="relative bg-sage-light p-4 mx-4 mt-4 rounded-xl flex justify-center h-44 items-center overflow-hidden">
-                <img src="${product.baseImg}" alt="${product.name}" class="max-h-full max-w-full object-contain transition-transform duration-300 hover:scale-105">
-            </div>
-
-            <div class="flex-1 flex flex-col justify-between px-4">
-                <div>
-                    <h3 class="text-base font-serif font-medium text-ink text-center line-clamp-2 h-11 mt-4 product-name">${product.name}</h3>
-
-                    <div class="flex justify-center items-center my-2 text-xs">
-                        <span class="text-ash font-medium">(${product.rating})</span>
-                    </div>
-
-                    <div class="flex justify-center gap-2 mt-3 mb-3 size-btn-container">
-                        ${product.sizes.map((sz, idx) => `
-                            <button onclick="selectSizeConfig('${sz.ml}', ${sz.price}, ${sz.mrp}, this)"
-                                    class="size-btn text-xs border ${idx === 0 ? 'border-ink bg-ink text-parchment' : 'border-[#DCD3BA] hover:border-ink text-ash'} px-3.5 py-1.5 rounded-full font-semibold tracking-wide transition">
-                                ${sz.ml}
-                            </button>
-                        `).join('')}
-                    </div>
-
-                    <div class="text-center mb-4">
-                        <span class="product-price font-serif font-semibold text-ink text-xl">₹ ${initialSize.price}</span>
-                        <span class="product-mrp text-xs line-through text-ash ml-2">₹ ${initialSize.mrp}</span>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white qty-container">
-                        <button onclick="adjustQuantityValue(-1, this)" class="w-11 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-                        <input type="number" class="quantity flex-1 h-10 text-center font-semibold text-ink focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" value="1" min="1" readonly>
-                        <button onclick="adjustQuantityValue(1, this)" class="w-11 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="commitProductToCart('${product.id}', this)" class="w-full bg-[#152219] hover:bg-[#1F3327] text-white py-3 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-            </button>
-        </div>`;
-    }).join('');
-}
-
-// 4. Local Size Config Switch Engine UI Casing Fixes
-function selectSizeConfig(sizeLabel, exactPrice, exactMrp, element) {
-    const currentCard = element.closest('.product-card');
-    if (!currentCard) return;
-
-    currentCard.querySelector('.product-price').innerText = `₹ ${exactPrice}`;
-    currentCard.querySelector('.product-mrp').innerText = `₹ ${exactMrp}`;
-
-    // Clear dynamic class strings across buttons on current branch tree only
-    currentCard.querySelectorAll('.size-btn').forEach(btn => {
-        btn.className = "size-btn text-xs border border-[#DCD3BA] hover:border-ink text-ash px-3.5 py-1.5 rounded-full font-semibold tracking-wide transition";
+        syncCartCounterIcon();
     });
 
-    // Apply strict custom configuration branding styles to active click targets
-    element.className = "size-btn text-xs border border-ink bg-ink text-parchment px-3.5 py-1.5 rounded-full font-semibold tracking-wide transition";
-}
-
-// 5. Dynamic Array Cascading Pipeline Filters Engine
-function filterProducts() {
-    let results = PRODUCTS_DATABASE.filter(item => {
-        if (selectedCategories.length > 0 && !selectedCategories.includes(item.category)) return false;
-        if (item.rating < ratingFloorFilter) return false;
-        if (activeQuickTag === 'bestseller' && !item.isBestseller) return false;
-
-        // Base variations filter mapping check constraints
-        const activeCardContextValuePrice = item.sizes[0].price;
-        if (activeCardContextValuePrice > maxPriceConstraint) return false;
-
-        return true;
-    });
-
-    const sortSelection = document.getElementById('sort-filter').value;
-    if (sortSelection === 'price-low-high') {
-        results.sort((a, b) => a.sizes[0].price - b.sizes[0].price);
-    } else if (sortSelection === 'price-high-low') {
-        results.sort((a, b) => b.sizes[0].price - a.sizes[0].price);
-    } else if (sortSelection === 'rating-high-low') {
-        results.sort((a, b) => b.rating - a.rating);
-    }
-
-    renderProductCatalog(results);
-}
-
-// Star UI Helper Engine
-function generateStarsHTML(rating) {
-    let html = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= Math.floor(rating)) {
-            html += `<i class="fa-solid fa-star"></i>`;
-        } else if (i - 0.5 <= rating) {
-            html += `<i class="fa-solid fa-star-half-stroke"></i>`;
-        } else {
-            html += `<i class="fa-regular fa-star text-gray-300"></i>`;
+    // Loop array data directly into isolated template component string maps 
+    function renderProductCatalog(products) {
+        const gridContainer = document.getElementById('product-grid');
+        const noProductsPlaceholder = document.getElementById('no-products');
+        
+        if (products.length === 0) {
+            gridContainer.innerHTML = "";
+            noProductsPlaceholder.classList.remove('hidden');
+            document.getElementById('results-count').innerText = `0 Products Found`;
+            return;
         }
-    }
-    return html;
-}
+        
+        noProductsPlaceholder.classList.add('hidden');
+        document.getElementById('results-count').innerText = `Showing ${products.length} products`;
 
-// Baaki functions (adjustQuantityValue, updatePriceLabel, setRatingFilter, applyQuickFilter, resetFilters, commitProductToCart, syncCartCounterIcon) exactly same rahenge...
+        gridContainer.innerHTML = products.map(product => {
+            const initialSize = product.sizes[0];
+            return `
+            <div data-id="${product.id}" class="product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden">
+
+                <div class="border-b border-dashed border-[#E3D9BC] px-4 pt-3 pb-2 flex items-center justify-between">
+                    <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-clay">${product.isBestseller ? '<i class="fa-solid fa-fire mr-1"></i>Bestseller' : `Batch GR-${String(product.id).padStart(3, '0')}`}</span>
+                    <div class="flex text-gold text-[11px]">
+                        ${generateStarsHTML(product.rating)}
+                    </div>
+                </div>
+
+                <div class="relative bg-sage-light p-4 mx-4 mt-4 rounded-xl flex justify-center h-44 items-center overflow-hidden">
+                    <img src="${product.baseImg}" alt="${product.name}" class="max-h-full max-w-full object-contain transition-transform duration-300 hover:scale-105">
+                </div>
+
+                <div class="flex-1 flex flex-col justify-between px-4">
+                    <div>
+                        <h3 class="text-base font-serif font-medium text-ink text-center line-clamp-2 h-11 mt-4 product-name">${product.name}</h3>
+
+                        <div class="flex justify-center items-center my-2 text-xs">
+                            <span class="text-ash font-medium">(${product.rating})</span>
+                        </div>
+
+                        <div class="flex justify-center gap-2 mt-3 mb-3 size-btn-container">
+                            ${product.sizes.map((sz, idx) => `
+                                <button onclick="selectSizeConfig('${sz.ml}', ${sz.price}, ${sz.mrp}, this)"
+                                        class="size-btn text-xs border ${idx === 0 ? 'border-ink bg-ink text-parchment' : 'border-[#DCD3BA] hover:border-ink text-ash'} px-3.5 py-1.5 rounded-full font-semibold tracking-wide transition">
+                                    ${sz.ml}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <span class="product-price font-serif font-semibold text-ink text-xl">₹ ${initialSize.price}</span>
+                            <span class="product-mrp text-xs line-through text-ash ml-2">₹ ${initialSize.mrp}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white qty-container">
+                            <button onclick="adjustQuantityValue(-1, this)" class="w-11 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
+                            <input type="number" class="quantity flex-1 h-10 text-center font-semibold text-ink focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" value="1" min="1" readonly>
+                            <button onclick="adjustQuantityValue(1, this)" class="w-11 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="commitProductToCart('${product.id}', this)" class="w-full bg-clay hover:bg-clay-dark text-white py-3 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+                </button>
+            </div>`;
+        }).join('');
+    }
+
+    // Star UI Generator Utility Function
+    function generateStarsHTML(rating) {
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= Math.floor(rating)) {
+                html += `<i class="fa-solid fa-star"></i>`;
+            } else if (i - 0.5 <= rating) {
+                html += `<i class="fa-solid fa-star-half-stroke"></i>`;
+            } else {
+                html += `<i class="fa-regular fa-star text-gray-300"></i>`;
+            }
+        }
+        return html;
+    }
+
+    // SCOPED COMPONENT 1: Local Size Configuration Switch Engine
+    function selectSizeConfig(sizeLabel, exactPrice, exactMrp, element) {
+        const currentCard = element.closest('.product-card');
+        if (!currentCard) return;
+
+        // Target price parameters locally within this DOM branch tree node boundaries only
+        currentCard.querySelector('.product-price').innerText = `₹ ${exactPrice}`;
+        currentCard.querySelector('.product-mrp').innerText = `₹ ${exactMrp}`;
+
+        // Clear configuration properties inside targeted context node elements only
+        currentCard.querySelectorAll('.size-btn').forEach(btn => {
+            btn.className = "size-btn text-xs border border-gray-300 px-3 py-1 rounded hover:bg-gray-100 text-gray-600 font-medium transition";
+        });
+
+        // Isolate active styling assignment to selection node parameters only
+        element.className = "size-btn text-xs border border-[#0f2c3d] px-3 py-1 rounded bg-[#0f2c3d] text-white font-medium transition shadow-xs";
+    }
 
     // SCOPED COMPONENT 2: Quantities Adjuster Node Processor Function Engine 
     function adjustQuantityValue(change, element) {
@@ -381,3 +319,126 @@ function generateStarsHTML(rating) {
         dropdownIcon.classList.toggle("rotate-180");
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// Loop array data directly into isolated template component string maps 
+function renderProductCatalog(products) {
+    const gridContainer = document.getElementById('product-grid');
+    const noProductsPlaceholder = document.getElementById('no-products');
+    
+    if (products.length === 0) {
+        gridContainer.innerHTML = "";
+        noProductsPlaceholder.classList.remove('hidden');
+        document.getElementById('results-count').innerText = `0 Products Found`;
+        return;
+    }
+    
+    noProductsPlaceholder.classList.add('hidden');
+    document.getElementById('results-count').innerText = `Showing ${products.length} products`;
+
+    gridContainer.innerHTML = products.map(product => {
+        const initialSize = product.sizes[0];
+        return `
+        <div data-id="${product.id}" class="relative w-full h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
+            
+            <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 ${product.isBestseller ? 'bg-orange-600' : 'bg-black'} uppercase text-white rounded-full flex items-center justify-center shadow-md">
+                ${product.isBestseller ? 'Hot' : 'New'}
+            </span>
+          
+            <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative bg-sage-light">
+                <a href="./product.html?id=${product.id}" class="block w-full h-[180px] flex items-center justify-center">
+                    <img src="${product.baseImg}" alt="${product.name}" class="max-h-full max-w-full object-contain transition-transform duration-300 hover:scale-110">
+                </a>
+            </div>
+
+            <div class="px-4 flex-1 flex flex-col justify-center">
+                <h3 class="text-base font-serif font-medium text-ink text-center leading-snug capitalize line-clamp-1 product-name">${product.name}</h3>
+                <p class="text-xs text-ash text-center font-serif mt-1 px-2 line-clamp-2 min-h-[2rem]">
+                    Premium product tailored for your personalized daily self-care ritual.
+                </p>
+
+                <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
+                    <div class="flex gap-1.5 items-center size-btn-container">
+                        ${product.sizes.map((sz, idx) => `
+                            <button onclick="changeCardSize('${sz.ml}', ${sz.price}, ${sz.mrp}, this)" 
+                                    class="size-btn text-xs px-2.5 py-1 rounded-full border ${idx === 0 ? 'border-ink bg-ink text-parchment' : 'border-[#DCD3BA] text-ash hover:border-ink'} font-medium transition">
+                                ${sz.ml}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="product-price font-sans font-semibold text-ink text-lg">₹${initialSize.price}</span>
+                        <span class="product-mrp text-xs line-through text-ash opacity-70">₹${initialSize.mrp}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-4 mb-3">
+                <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
+                <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
+                    <span class="text-black text-xs font-medium">(${product.rating})</span>
+                    <div class="flex text-[#D4AF37] gap-0.5">
+                        ${generateStarsHTML(product.rating)}
+                    </div>
+                </div>
+
+                <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm qty-container">
+                    <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
+                    <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
+                    <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
+                </div>
+            </div>
+
+            <button id="cart-toggle-btn" onclick="toggleCartState('${product.id}', this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
+                <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+            </button>
+        </div>`;
+    }).join('');
+}
+
+
+// 1. New Size Configurations Switcher Engine
+function changeCardSize(sizeLabel, exactPrice, exactMrp, element) {
+    const currentCard = element.closest('.product-card');
+    if (!currentCard) return;
+
+    // Prices Update
+    currentCard.querySelector('.product-price').innerText = `₹${exactPrice}`;
+    currentCard.querySelector('.product-mrp').innerText = `₹${exactMrp}`;
+
+    // Reset Styles on all size buttons inside this card
+    currentCard.querySelectorAll('.size-btn').forEach(btn => {
+        btn.className = "size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition";
+    });
+
+    // Apply Active Styles
+    element.className = "size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition";
+}
+
+// 2. New Quantity Selector Modifier Engine
+function updateQty(change, element) {
+    const parentQtyWrapper = element.closest('.qty-container');
+    const targetInput = parentQtyWrapper.querySelector('.quantity');
+    
+    let currentQuantityValue = parseInt(targetInput.value) || 1;
+    currentQuantityValue += change;
+    
+    if (currentQuantityValue < 1) currentQuantityValue = 1;
+    targetInput.value = currentQuantityValue;
+}
+
+// 3. New Cart Handler Bridge Connection
+function toggleCartState(productId, actionBtnElement) {
+    // Purane function 'commitProductToCart' ko direct fire karega bina structure tode
+    commitProductToCart(productId, actionBtnElement);
+}
