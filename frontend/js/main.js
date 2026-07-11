@@ -1,6 +1,42 @@
 
 
+// pop design scrpt
+const popup = document.getElementById('discountPopup');
+        const popupBox = document.getElementById('popupBox');
+        const closePopupBtn = document.getElementById('closePopup');
+        const claimBtn = document.getElementById('claimBtn');
 
+        // Page load hone ke 600ms baad popup smoothly show hoga
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                // Remove hidden utilities and trigger transitions
+                popup.classList.remove('opacity-0', 'pointer-events-none');
+                popupBox.classList.remove('scale-95');
+                
+                popup.classList.add('opacity-100', 'pointer-events-auto');
+                popupBox.classList.add('scale-100');
+            }, 600);
+        });
+
+        // Popup close karne ka reusable function
+        function hidePopup() {
+            popup.classList.remove('opacity-100', 'pointer-events-auto');
+            popupBox.classList.remove('scale-100');
+            
+            popup.classList.add('opacity-0', 'pointer-events-none');
+            popupBox.classList.add('scale-95');
+        }
+
+        // Event Listeners
+        closePopupBtn.addEventListener('click', hidePopup);
+        claimBtn.addEventListener('click', hidePopup); // Aap yahan user ko kisi checkout/coupon page par redirect bhi kar sakte hain
+
+        // Agar user popup box ke bahar click kare toh bhi close ho jaye
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) {
+                hidePopup();
+            }
+        });
 
 
 document.addEventListener("DOMContentLoaded", () => {
