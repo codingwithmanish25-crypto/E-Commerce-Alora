@@ -1,5 +1,29 @@
 
 
+// Elements ko select karna
+const searchOpenBtn = document.getElementById('search-open-btn');
+const searchCloseBtn = document.getElementById('search-close-btn');
+const searchContainer = document.getElementById('search-container');
+const searchInput = document.getElementById('search-input');
+
+// Search Icon par click karne par box open hoga
+searchOpenBtn.addEventListener('click', () => {
+    searchContainer.classList.add('open');
+    searchInput.focus(); // Box open hote hi cursor input me chala jayega
+});
+
+// Close (X) button par click karne par box band hoga
+searchCloseBtn.addEventListener('click', () => {
+    searchContainer.classList.remove('open');
+});
+
+// Agar user 'Escape' key dabaye to bhi search band ho jaye (Optional but good UX)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        searchContainer.classList.remove('open');
+    }
+});
+
 // pop design scrpt
 const popup = document.getElementById('discountPopup');
         const popupBox = document.getElementById('popupBox');
