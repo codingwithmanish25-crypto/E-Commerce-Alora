@@ -13,7 +13,7 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       border: none;
-      filter: blur(6px) brightness(0.9);
+      /* filter: blur(6px) brightness(0.9); */
       transform: scale(1.02); /* blur edges chupane ke liye thoda zoom */
       pointer-events: none;   /* background clickable na ho */
       z-index: 0;
@@ -29,13 +29,13 @@
   <div class="absolute inset-0 bg-black/30 z-[1] pointer-events-none"></div>
 
   <!-- Login Box -->
-  <div class="bg-white/95 p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 relative z-10 border border-white/40">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 relative z-10 border border-white/40">
 
     <a href="./index.html" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl no-underline">&times;</a>
 
     <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 tracking-tight">Login</h2>
 
-    <form id="loginForm" class="space-y-4">
+    <form id="loginForm" class="space-y-4 ">
       <div>
         <label class="block text-gray-600 text-sm font-medium">Email</label>
         <input type="email" id="email" required class="w-full mt-1 p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition">
@@ -47,7 +47,7 @@
       <div class="text-right">
         <a href="forgot-password.html" class="text-sm text-blue-500 hover:underline">Forgot Password?</a>
       </div>
-      <button type="submit" class="w-full bg-blue-500 text-white py-2.5 rounded-xl font-semibold hover:bg-blue-600 transition shadow-sm">Login</button>
+      <button type="submit" class="w-full bg-[#2A2A24] text-white py-2.5 rounded-xl font-semibold hover:bg-orange-600 transition shadow-sm">Login</button>
     </form>
 
     <div class="relative flex py-4 items-center">
