@@ -1,20 +1,15 @@
-/* =========================================================
-   GLOW RITUAL — SHARED CART SYSTEM
-   Include this ONE file on every page (index.html, moreproduct.html,
-   product.html, cart.html) instead of separate scripts.
-   It uses localStorage key "glowCart" so the cart persists
-   across pages.
-   ========================================================= */
-
 const CART_KEY = "glowCart";
 const FREE_SHIPPING_LIMIT = 499;
 const DELIVERY_FEE = 40;
+const FOUNDER_DELIVERY_CHARGE = 5000; 
 
 /* ---------- storage helpers ---------- */
 function getCart() {
     try {
-        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const data = localStorage.getItem(CART_KEY);
+        return data ? JSON.parse(data) : [];
     } catch (e) {
+        console.error("Error reading localStorage", e);
         return [];
     }
 }
@@ -28,19 +23,17 @@ function saveCart(cart) {
 function updateHeaderCartCount() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-    // Update every badge on the page (nav + mobile nav both use this class)
+    
+    // Sabhi badges ko update karega
     document.querySelectorAll(".cart-badge").forEach(badge => {
         badge.innerText = totalItems;
     });
 }
 
 /* =========================================================
-   PRODUCT LISTING PAGE (index.html / moreproduct.html / product.html)
-   Each product card needs a unique data-product-id on the
-   outer card div, e.g. data-product-id="daily-radiance-1"
+   PRODUCT LISTING PAGE FUNCTIONS
    ========================================================= */
 
-// Keeps track of the currently selected size/price per card
 function selectSize(size, price, mrp, btnEl) {
     const card = btnEl.closest(".product-card");
     if (!card) return;
@@ -49,7 +42,6 @@ function selectSize(size, price, mrp, btnEl) {
     card.dataset.price = price;
     card.dataset.mrp = mrp;
 
-    // toggle active styles on size buttons
     card.querySelectorAll(".size-btn").forEach(b => {
         b.classList.remove("bg-ink", "text-parchment", "border-ink");
         b.classList.add("border-[#DCD3BA]", "text-ash");
@@ -57,7 +49,6 @@ function selectSize(size, price, mrp, btnEl) {
     btnEl.classList.add("bg-ink", "text-parchment", "border-ink");
     btnEl.classList.remove("border-[#DCD3BA]", "text-ash");
 
-    // update displayed price
     const priceEl = card.querySelector(".product-price");
     const mrpEl = card.querySelector(".product-mrp");
     if (priceEl) priceEl.innerText = `₹ ${price}`;
@@ -73,7 +64,6 @@ function updateQty(amount, btnEl) {
     input.value = val;
 }
 
-// Called from the "Add to Cart" button on a product card
 function toggleCartState(btnEl) {
     const card = btnEl.closest(".product-card");
     if (!card) return;
@@ -82,18 +72,15 @@ function toggleCartState(btnEl) {
     const img = card.querySelector("img").getAttribute("src");
     const qty = parseInt(card.querySelector(".quantity").value) || 1;
 
-    // fall back to the visible price/size if no size button was clicked yet
     const size = card.dataset.size || card.querySelector(".size-btn.bg-ink")?.innerText.trim() || "100ml";
     const price = parseInt(card.dataset.price) || parseInt(card.querySelector(".product-price").innerText.replace(/[^\d]/g, "")) || 0;
     const mrp = parseInt(card.dataset.mrp) || parseInt(card.querySelector(".product-mrp")?.innerText.replace(/[^\d]/g, "")) || price;
 
-    // unique id per product+size so different sizes stack separately
-    const productId = card.dataset.productId || img; // use image path as fallback unique key
+    const productId = card.dataset.productId || img; 
     const id = `${productId}__${size}`;
 
     addToCart({ id, name, size, price, mrp, qty, img });
 
-    // simple visual feedback instead of alert()
     const originalHTML = btnEl.innerHTML;
     btnEl.innerHTML = `<i class="fa-solid fa-check text-xs"></i> Added to Cart`;
     btnEl.disabled = true;
@@ -117,8 +104,7 @@ function addToCart(product) {
 }
 
 /* =========================================================
-   CART PAGE (cart.html)
-   Expects an empty container: <div id="cart-items-list"></div>
+   CART PAGE FUNCTIONS
    ========================================================= */
 
 let activeCouponRate = 0;
@@ -126,7 +112,7 @@ let activeCouponCode = "";
 
 function renderCartPage() {
     const listEl = document.getElementById("cart-items-list");
-    if (!listEl) return; // not on the cart page
+    if (!listEl) return; 
 
     const cart = getCart();
     const emptyState = document.getElementById("empty-cart-state");
@@ -149,8 +135,8 @@ function renderCartPage() {
         <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition hover:shadow-md" data-cart-id="${item.id}">
             <div class="flex gap-4 items-center w-full sm:w-auto">
                 <div class="bg-white rounded-xl w-24 h-24 flex-shrink-0 flex items-center justify-center border border-[#E7DFC7] overflow-hidden">
-                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
-            </div>
+                    <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                </div>
                 <div>
                     <h3 class="font-serif font-semibold text-ink text-base">${item.name}</h3>
                     <p class="text-xs text-ash mt-1">
@@ -168,7 +154,7 @@ function renderCartPage() {
 
                 <div class="flex items-center border border-[#DCD3BA] rounded-lg overflow-hidden bg-[#FAF7EE] h-9">
                     <button onclick="changeCartQty('${item.id}', -1)" class="w-8 h-full bg-white text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center text-sm">−</button>
-                    <input type="number" value="${item.qty}" min="1" readonly class="w-10 h-full bg-white text-center font-semibold text-ink text-xs focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    <input type="number" value="${item.qty}" min="1" readonly class="w-10 h-full bg-white text-center font-semibold text-ink text-xs focus:outline-none">
                     <button onclick="changeCartQty('${item.id}', 1)" class="w-8 h-full bg-white text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center text-sm">+</button>
                 </div>
 
@@ -217,13 +203,16 @@ function recalculateBill() {
     const shippingAlert = document.getElementById("shipping-alert");
     const shippingNeededEl = document.getElementById("shipping-needed");
     const appliedCouponName = document.getElementById("applied-coupon-name");
+    
+    // Checkbox selector
+    const founderCheckbox = document.getElementById("founder-delivery");
 
     if (!billSubtotalEl) return;
 
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     billSubtotalEl.innerText = `₹ ${subtotal}`;
 
-    // discount
+    // discount logic
     let discount = 0;
     if (activeCouponRate > 0) {
         discount = Math.round(subtotal * activeCouponRate);
@@ -234,7 +223,7 @@ function recalculateBill() {
         discountRow.classList.add("hidden");
     }
 
-    // shipping
+    // shipping logic
     let deliveryFee = DELIVERY_FEE;
     if (subtotal >= FREE_SHIPPING_LIMIT) {
         deliveryFee = 0;
@@ -246,20 +235,27 @@ function recalculateBill() {
         shippingNeededEl.innerText = `₹ ${FREE_SHIPPING_LIMIT - subtotal}`;
     }
 
-    billTotalEl.innerText = `₹ ${subtotal - discount + deliveryFee}`;
+    // Founder delivery ₹5000 addition logic
+    let extraFounderCharge = 0;
+    if (founderCheckbox && founderCheckbox.checked) {
+        extraFounderCharge = FOUNDER_DELIVERY_CHARGE;
+    }
+
+    billTotalEl.innerText = `₹ ${subtotal - discount + deliveryFee + extraFounderCharge}`;
 }
 
 function autoFillCoupon(code) {
     const couponInput = document.getElementById("coupon-input");
-    couponInput.value = code;
+    if(couponInput) couponInput.value = code;
     applyCoupon();
 }
 
 function applyCoupon() {
     const couponInput = document.getElementById("coupon-input");
     const couponMessage = document.getElementById("coupon-message");
+    if(!couponInput || !couponMessage) return;
+    
     const typedCode = couponInput.value.trim().toUpperCase();
-
     couponMessage.classList.remove("hidden", "text-emerald-600", "text-red-600");
 
     if (typedCode === "GLOW20") {
@@ -279,5 +275,13 @@ function applyCoupon() {
 /* ---------- run on every page load ---------- */
 document.addEventListener("DOMContentLoaded", () => {
     updateHeaderCartCount();
-    renderCartPage(); // no-ops automatically on non-cart pages
+    renderCartPage(); 
+
+    // Dynamic Checkbox changes track karne ke liye listener
+    const founderCheckbox = document.getElementById("founder-delivery");
+    if (founderCheckbox) {
+        founderCheckbox.addEventListener("change", () => {
+            recalculateBill();
+        });
+    }
 });

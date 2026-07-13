@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Register</h2>
+    <form id="registerForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-600 text-sm font-medium">FullName</label>
+        <input type="text" id="name" required class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+      </div>
+      <div>
+        <label class="block text-gray-600 text-sm font-medium">Email</label>
+        <input type="email" id="email" required class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+      </div>
+      <div>
+        <label class="block text-gray-600 text-sm font-medium">Password</label>
+        <input type="password" id="password" required class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+      </div>
+      <button type="submit" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition">Register</button>
+    </form>
+
+    <div class="relative flex py-4 items-center">
+      <div class="flex-grow border-t border-gray-300"></div>
+      <span class="flex-shrink mx-4 text-gray-400 text-sm">or</span>
+      <div class="flex-grow border-t border-gray-300"></div>
+    </div>
+
+    <div class="flex justify-center">
+      <div id="g_id_onload"
+           data-client_id="950750495245-vbc28hm59u61mkeisfhs0h1e8r5l5tnp.apps.googleusercontent.com.apps.googleusercontent.com"
+           data-callback="handleCredentialResponse">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Already have an account? <a href="login.html" class="text-blue-500 hover:underline">Login</a>
+    </p>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

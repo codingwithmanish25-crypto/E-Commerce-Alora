@@ -197,23 +197,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function toggleCartState(button) {
-    // Check if the product is already marked as added
     const isAlreadyInCart = button.getAttribute('data-in-cart') === 'true';
+    const card = button.closest('.product-card');
+    if (!card) return;
 
     if (!isAlreadyInCart) {
-        // Change UI to "In Cart" Success State
+        // Card se product ki info nikaalo
+        const name = card.querySelector('h3').innerText.trim();
+        const priceText = card.querySelector('.product-price').innerText.replace(/[^\d.]/g, '');
+        const price = parseFloat(priceText) || 0;
+        const imgEl = card.querySelector('img');
+        const img = imgEl ? imgEl.src : '';
+        const qtyInput = card.querySelector('.quantity');
+        const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+        const id = name; // agar backend id mile to usko use karna behtar hoga
+
+        addToCart(id, name, price, img, qty);
+
         button.setAttribute('data-in-cart', 'true');
         button.innerHTML = `<i class="fa-solid fa-circle-check text-xs"></i> In Cart`;
-        
-        // Optional: Swap background coloring to alert successful interaction
-        button.className = "w-full bg-emerald-600 text-white py-2.5 rounded font-medium text-sm tracking-wide uppercase shadow hover:bg-emerald-700 transition flex items-center justify-center gap-2";
+        button.className = "w-full bg-emerald-600 text-white py-2.5 rounded font-medium text-sm tracking-wide uppercase shadow hover:bg-emerald-700 transition flex items-center justify-center gap-2 mt-auto";
     } else {
-        // Revert state back to standard "Add to Cart"
         button.setAttribute('data-in-cart', 'false');
         button.innerHTML = `<i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart`;
-        
-        // Revert background color back to theme matching #0f2c3d
-        button.className = "w-full bg-[#0f2c3d] text-white py-2.5 rounded font-medium text-sm tracking-wide uppercase shadow hover:bg-opacity-90 transition flex items-center justify-center gap-2";
+        button.className = "w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto";
     }
 }
 
@@ -221,21 +228,18 @@ function toggleCartState(button) {
 // ==============Add to Cart +==============================
 
 
-function addToCart(id, name, price, img) {
+function addToCart(id, name, price, img, qty = 1) {
     let cart = JSON.parse(localStorage.getItem('glowCart')) || [];
-    
-    
     let existingProduct = cart.find(item => item.id === id);
-    
+
     if (existingProduct) {
-        existingProduct.qty += 1;
+        existingProduct.qty += qty;
     } else {
-        cart.push({ id, name, price, img, qty: 1 });
+        cart.push({ id, name, price, img, qty });
     }
-    
+
     localStorage.setItem('glowCart', JSON.stringify(cart));
     updateHeaderCartCount();
-    alert(`${name} कार्ट में जोड़ दिया गया है!`);
 }
 
 
@@ -348,40 +352,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ==================== preves and next button=============
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", () => {
     const track = document.getElementById("slider-track");
     const nextBtn = document.getElementById("next-btn");
     const prevBtn = document.getElementById("prev-btn");
     const slides = track.children;
     const totalSlides = slides.length;
     
+    // Main outer container ko select kiya hover detect karne ke liye
+    const sliderContainer = track.parentElement; 
+    
     let currentIndex = 0;
-    const updateSlider = ()=>{
+    let autoInterval; // Interval ko dynamic handle karne ke liye variable
+
+    const updateSlider = () => {
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
 
-    nextBtn.addEventListener("click",()=>{
-        if(currentIndex <totalSlides-1){
+    nextBtn.addEventListener("click", () => {
+        if (currentIndex < totalSlides - 1) {
             currentIndex++;
-        }else{
-            currentIndex=0;
+        } else {
+            currentIndex = 0;
         }
-        updateSlider()
-    })
+        updateSlider();
+    });
 
-    prevBtn.addEventListener("click",()=>{
-        if(currentIndex > 0){
+    prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) {
             currentIndex--;
-        }else{
-            currentIndex = totalSlides-1
+        } else {
+            currentIndex = totalSlides - 1;
         }
-        updateSlider()
-    })
+        updateSlider();
+    });
 
-    setInterval(()=>{
-        nextBtn.click()
-    },5000)
-})
+    // 1. Slider ko start karne ka function
+    const startAutoSlide = () => {
+        autoInterval = setInterval(() => {
+            nextBtn.click();
+        }, 5000);
+    };
+
+    // 2. Slider ko stop/pause karne ka function
+    const stopAutoSlide = () => {
+        clearInterval(autoInterval);
+    };
+
+    // --- HOVER FUNCTIONALITY LOGIC ---
+    
+    // Jab user mouse slider ke upar layega -> Carousel pause ho jayega
+    sliderContainer.addEventListener("mouseenter", stopAutoSlide);
+
+    // Jab user mouse slider se hataega -> Carousel fir se 5 sec baad chalne lagega
+    sliderContainer.addEventListener("mouseleave", startAutoSlide);
+
+    // Initial load par slider ko start karne ke liye
+    startAutoSlide();
+});
 
 
 
