@@ -191,7 +191,7 @@
                 <ul class="flex gap-6">
                     <li><a href="#" class="hover:text-gold transition">Home</a></li>
                     <li><a href="./moreproduct.html" class="hover:text-gold transition">Shop</a></li>
-                    <li class="relative group">
+                    <!-- <li class="relative group">
                         <a href="#" class="hover:text-gold transition flex items-center gap-1">
                             Skin &amp; Body
                             <svg class="w-3 h-3 transform group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +203,11 @@
                             <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition">Body Lotions</a></li>
                             <li><a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold transition">Sun Protection</a></li>
                         </ul>
-                    </li>
+                    </li> -->
+
+                    <li><a href="#">Skin</a></li>
+                    <li><a href="#">Body</a></li>
+                    <li><a href="#">Blogs</a></li>
                     
                 </ul>
             </div>
@@ -211,7 +215,7 @@
         
         <div class="flex justify-center items-center p-2">
             <span class="h-[30px] flex items-center">
-                <img src="./static/logo2.png" alt="logo" class="w-[140px] md:w-[170px] h-fit">
+                <img src="./static/logo4.png" alt="logo" class="w-[140px] md:w-[170px] h-fit">
             </span>
         </div>
         
@@ -234,7 +238,7 @@
         <ul class="flex flex-col gap-4">
             <li><a href="#" class="block hover:text-gold transition py-1">Home</a></li>
             <li><a href="./moreproduct.html" class="block hover:text-gold transition py-1">Shop</a></li>
-            <li>
+            <!-- <li>
                 <button id="mobile-dropdown-btn" class="w-full flex justify-between items-center hover:text-gold transition py-1 uppercase tracking-wide text-left">
                     Skin &amp; Body
                     <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
@@ -244,7 +248,11 @@
                     <li><a href="#" class="block hover:text-gold py-1">Body Lotions</a></li>
                     <li><a href="#" class="block hover:text-gold py-1">Sun Protection</a></li>
                 </ul>
-            </li>
+            </li> -->
+
+                    <li><a href="#">Skin</a></li>
+                    <li><a href="#">Body</a></li>
+                    <li><a href="#">Blogs</a></li>
            
         </ul>
     </div>
@@ -908,17 +916,47 @@
     </section>
 
     <!-- =============Some Face image TO redirect ============= -->
-     <section class="p-5">
-        <div class="flex gap-5 ">
-            <div class="flex flex-col">
-                <img src="./static/faceSkin.avif" alt="faceskin image" class="w-[270px]">
-                <span class="flex items-center">Skin</span>
-            </div>
-            <img src="./static/faceskin2.avif" alt="faceskin image2" class="w-[270px]">
-            <img src="./static/faceskin3.avif" alt="faceskin image3" class="w-[270px]">
-            <img src="./static/faceskin4.avif" alt="faceskin image4" class="w-[270px]">
+     <section class="p-5 max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        
+        <div class="flex flex-col group">
+            <a href="./moreproduct.html" class="text-center block overflow-hidden rounded-lg">
+                <div class="overflow-hidden rounded-lg mb-2">
+                    <img src="./static/faceSkin.avif" alt="Uneven Tone" class="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300 ease-in-out">
+                </div>
+                <span class="font-medium text-black/85 group-hover:text-gold transition-colors duration-200">Uneven Tone</span>
+            </a>
         </div>
-     </section>
+
+        <div class="flex flex-col group">
+            <a href="./moreproduct.html" class="text-center block overflow-hidden rounded-lg">
+                <div class="overflow-hidden rounded-lg mb-2">
+                    <img src="./static/faceSkin2.avif" alt="Acne control" class="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300 ease-in-out">
+                </div>
+                <span class="font-medium text-black/85 group-hover:text-gold transition-colors duration-200">Acne control</span>
+            </a>
+        </div>
+
+        <div class="flex flex-col group">
+            <a href="./moreproduct.html" class="text-center block overflow-hidden rounded-lg">
+                <div class="overflow-hidden rounded-lg mb-2">
+                    <img src="./static/faceSkin3.avif" alt="Oiliness" class="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300 ease-in-out">
+                </div>
+                <span class="font-medium text-black/85 group-hover:text-gold transition-colors duration-200">Oiliness</span>
+            </a>
+        </div>
+
+        <div class="flex flex-col group">
+            <a href="./moreproduct.html" class="text-center block overflow-hidden rounded-lg">
+                <div class="overflow-hidden rounded-lg mb-2">
+                    <img src="./static/faceSkin4.avif" alt="Wrinkles" class="w-full h-auto object-cover transform hover:scale-105 transition-all duration-300 ease-in-out">
+                </div>
+                <span class="font-medium text-black/85 group-hover:text-gold transition-colors duration-200">Wrinkles</span>
+            </a>
+        </div>
+
+    </div>
+</section>
 
     <!-- ============ OUR STORY ============ -->
     <section class="bg-white py-20 border-b border-[#E7DFC7]">
