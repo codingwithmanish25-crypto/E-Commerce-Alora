@@ -3,46 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login | Alora Radiance</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    /* Background me index.html ko iframe se dikhाना aur blur karna */
+    #bgFrame {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+      filter: blur(6px) brightness(0.9);
+      transform: scale(1.02); /* blur edges chupane ke liye thoda zoom */
+      pointer-events: none;   /* background clickable na ho */
+      z-index: 0;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
-  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+<body class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- Background: live index.html blurred -->
+  <iframe id="bgFrame" src="./index.html" tabindex="-1" aria-hidden="true"></iframe>
+
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black/30 z-[1] pointer-events-none"></div>
+
+  <!-- Login Box -->
+  <div class="bg-white/95 p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 relative z-10 border border-white/40">
+
+    <a href="./index.html" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl no-underline">&times;</a>
+
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800 tracking-tight">Login</h2>
+
     <form id="loginForm" class="space-y-4">
       <div>
         <label class="block text-gray-600 text-sm font-medium">Email</label>
-        <input type="email" id="email" required class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+        <input type="email" id="email" required class="w-full mt-1 p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition">
       </div>
       <div>
         <label class="block text-gray-600 text-sm font-medium">Password</label>
-        <input type="password" id="password" required class="w-full mt-1 p-2 border rounded focus:ring-2 focus:ring-blue-400 outline-none">
+        <input type="password" id="password" required class="w-full mt-1 p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none transition">
       </div>
       <div class="text-right">
         <a href="forgot-password.html" class="text-sm text-blue-500 hover:underline">Forgot Password?</a>
       </div>
-      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition">Login</button>
+      <button type="submit" class="w-full bg-blue-500 text-white py-2.5 rounded-xl font-semibold hover:bg-blue-600 transition shadow-sm">Login</button>
     </form>
-    
+
     <div class="relative flex py-4 items-center">
-        <div class="flex-grow border-t border-gray-300"></div>
-        <span class="flex-shrink mx-4 text-gray-400 text-sm">or</span>
-        <div class="flex-grow border-t border-gray-300"></div>
+      <div class="flex-grow border-t border-gray-200"></div>
+      <span class="flex-shrink mx-4 text-gray-400 text-sm">or</span>
+      <div class="flex-grow border-t border-gray-200"></div>
     </div>
 
     <div class="flex justify-center">
       <div id="g_id_onload"
-           data-client_id="950750495245-vbc28hm59u61mkeisfhs0h1e8r5l5tnp.apps.googleusercontent.com.apps.googleusercontent.com"
+           data-client_id="950750495245-vbc28hm59u61mkeisfhs0h1e8r5l5tnp.apps.googleusercontent.com"
            data-callback="handleCredentialResponse">
       </div>
       <div class="g_id_signin" data-type="standard"></div>
     </div>
 
     <p class="mt-6 text-center text-sm text-gray-600">
-      Don't have an account? <a href="register.html" class="text-blue-500 hover:underline">Register</a>
+      Don't have an account? <a href="register.html" class="text-blue-500 font-semibold hover:underline">Register</a>
     </p>
   </div>
-  <script src="app.js"></script>
+
+  <script src="./js/auth.js"></script>
 </body>
 </html>
