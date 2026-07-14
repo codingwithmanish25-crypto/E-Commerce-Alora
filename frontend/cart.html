@@ -9,29 +9,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ink: '#152219',
-                        'ink-light': '#1F3327',
-                        parchment: '#F7F2E7',
-                        clay: '#A24C3D',
-                        'clay-light': '#C97E63',
-                        'clay-dark': '#7E3A2F',
-                        sage: '#6C8763',
-                        'sage-light': '#E7ECDF',
-                        gold: '#BB9556',
-                        ash: '#6B685F',
-                    },
-                    fontFamily: {
-                        serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
-                        sans: ['Manrope', 'ui-sans-serif', 'sans-serif'],
-                    },
-                }
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    ink: '#152219',
+                    'ink-light': '#1F3327',
+                    'ink-soft': '#28402F',
+                    parchment: '#F7F2E7',
+                    card: '#FFFFFF',
+                    clay: '#A24C3D',
+                    'clay-light': '#C97E63',
+                    'clay-dark': '#7E3A2F',
+                    sage: '#6C8763',
+                    'sage-light': '#E7ECDF',
+                    gold: '#BB9556',
+                    ash: '#6B685F',
+                },
+                fontFamily: {
+                   
+                    robot: ['"PT Sans"', 'ui-robot', 'Georgia', 'robot'],
+                    sans: ['"PT Sans"', 'Manrope', 'sans-serif'],
+                    roboto: ['"Roboto Mono"', 'monospace'],
+                },
             }
         }
-    </script>
+    }
+</script>
 </head>
 <body class="bg-parchment text-[#2A2A24] font-sans antialiased">
 
@@ -122,7 +126,7 @@
 </nav>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="./product.html" class="flex items-center gap-2 text-ink font-serif italic font-semibold text-xl tracking-tight">
+            <a href="./product.html" class="flex items-center gap-2 text-ink font-serif    font-semibold text-xl tracking-tight">
                 <i class="fa-solid fa-sparkles text-gold text-base"></i>Alora radiance
             </a>
             <a href="./product.html" class="text-sm font-semibold text-ash hover:text-clay transition">
@@ -134,9 +138,9 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-12">
         <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">Checkout</p>
-        <h1 class="text-2xl sm:text-3xl font-serif italic font-medium text-ink mb-8 flex items-center gap-3">
+        <h1 class="text-2xl sm:text-3xl font-serif    font-medium text-ink mb-8 flex items-center gap-3">
             <i class="fa-solid fa-bag-shopping text-clay text-2xl"></i> Your Shopping Bag
-            <span id="cart-count-badge" class="text-xs bg-ink text-parchment px-3 py-1.5 rounded-full font-semibold tracking-wide not-italic font-sans">0 Items</span>
+            <span id="cart-count-badge" class="text-xs bg-ink text-parchment px-3 py-1.5 rounded-full font-semibold tracking-wide not-   font-sans">0 Items</span>
         </h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">

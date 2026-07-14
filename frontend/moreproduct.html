@@ -9,29 +9,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        ink: '#152219',
-                        'ink-light': '#1F3327',
-                        parchment: '#F7F2E7',
-                        clay: '#A24C3D',
-                        'clay-light': '#C97E63',
-                        'clay-dark': '#7E3A2F',
-                        sage: '#6C8763',
-                        'sage-light': '#E7ECDF',
-                        gold: '#BB9556',
-                        ash: '#6B685F',
-                    },
-                    fontFamily: {
-                        serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
-                        sans: ['Manrope', 'ui-sans-serif', 'sans-serif'],
-                    },
-                }
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    ink: '#152219',
+                    'ink-light': '#1F3327',
+                    'ink-soft': '#28402F',
+                    parchment: '#F7F2E7',
+                    card: '#FFFFFF',
+                    clay: '#A24C3D',
+                    'clay-light': '#C97E63',
+                    'clay-dark': '#7E3A2F',
+                    sage: '#6C8763',
+                    'sage-light': '#E7ECDF',
+                    gold: '#BB9556',
+                    ash: '#6B685F',
+                },
+                fontFamily: {
+                   
+                    robot: ['"PT Sans"', 'ui-robot', 'Georgia', 'robot'],
+                    sans: ['"PT Sans"', 'Manrope', 'sans-serif'],
+                    roboto: ['"Roboto Mono"', 'monospace'],
+                },
             }
         }
-    </script>
+    }
+</script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -129,7 +133,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
             <div>
                 <p class="text-[10px] font-bold tracking-[0.25em] uppercase text-clay">The Collection</p>
-                <h1 class="text-sm font-serif italic font-semibold text-ink -mt-0.5">Shop All Products</h1>
+                <h1 class="text-sm font-serif  font-semibold text-ink -mt-0.5">Shop All Products</h1>
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="applyQuickFilter('all')" class="text-xs font-semibold uppercase tracking-wide text-ash hover:text-ink px-3 py-1.5 rounded-full border border-transparent hover:border-[#E3D9BC] transition">View All</button>
@@ -219,13 +223,13 @@
     </main>
 
     <!-- ============ FOOTER (matches index.html) ============ -->
-   <footer class="bg-ink text-parchment/80 pt-16 pb-6 mt-10 border-t border-gold/20">
+  <footer class="bg-black  text-gold/80 pt-16 pb-6 mt-10 border-t border-gold/20">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
             <div>
                
                 <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Company Overview</h3>
                 <ul class="space-y-2.5 text-sm">
-                    <li><a href="#" class="hover:text-gold transition">About Our Brand</a></li>
+                    <li><a href="./aboutus.html" class="hover:text-gold transition">About Our Brand</a></li>
                     <li><a href="#" class="hover:text-gold transition">Privacy Policy</a></li>
                     <li><a href="#" class="hover:text-gold transition">Terms &amp; Conditions</a></li>
                     <li><a href="#" class="hover:text-gold transition">Corporate Governance</a></li>
@@ -238,7 +242,7 @@
                 <ul class="space-y-2.5 text-sm mb-8">
                     <li><a href="#" class="hover:text-gold transition">Knowledge Base FAQs</a></li>
                     <li><a href="#" class="hover:text-gold transition">Return &amp; Refund Policy</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Payment Options</a></li>
+                   
                 </ul>
                 <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-3">Follow Along</h3>
                 <div class="flex gap-4 text-lg">
@@ -250,7 +254,7 @@
             </div>
 
             <div class="bg-ink-light p-6 rounded-xl border border-white/10">
-                <h3 class="text-parchment font-serif font-semibold text-lg mb-4">Get in Touch</h3>
+                <h3 class="text-parchment font-robot font-semibold text-lg mb-4">Get in Touch</h3>
                 <form class="space-y-3">
                     <div>
                         <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Name</label>
