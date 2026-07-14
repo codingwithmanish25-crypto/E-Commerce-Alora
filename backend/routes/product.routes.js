@@ -31,6 +31,10 @@ const upload = multer({
     }
 })
 
+
+
+
+
 router.post("/add",upload.single('imagepath'),addnewproduct)
 router.get("/all",readproduct)
 router.put("/update/:id",upload.single('imagepath'),updateproduct)

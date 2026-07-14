@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import db from "./config/db.js"
 import productRouter from "./routes/product.routes.js"
+import authRoutes from "./routes/auth.routes.js"
 import dotenv from "dotenv"
 import dns from "dns"
 
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use('/uploads', express.static('uploads'));
 app.use("/api/product", productRouter)
+app.use('/api/auth', authRoutes);
 
 const Port = process.env.PORT  
 app.listen(Port,()=>{
