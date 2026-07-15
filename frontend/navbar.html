@@ -1,71 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Admin - Navbar</title>
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-</head>
-<body class="font-['Manrope'] bg-gray-50 flex flex-col h-screen">
 
-       <nav class="h-16 bg-gray-900 text-white flex items-center px-6 shrink-0">
-        <h1 class="text-xl font-bold">Hello Admin</h1>
-    </nav>
-    <div class="flex flex-1 ">
-        
-        <aside class="bg-gray-800 text-gray-300 w-64 min-h-full p-4 flex flex-col justify-between shrink-0">
-            <nav class="w-full">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="./dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-gray-700 text-white font-medium">
-                            <i class="fa-solid fa-chart-line"></i> Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./adminproduct.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-box"></i> Product
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./navbar.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-compass"></i> Navigation
-                        </a>
-                    </li>
+<!-- ============ NAV ============ -->
+<nav class="bg-white text-parchment sticky top-0 z-50 border-b border-gold/20">
+    <div class="max-w-7xl mx-auto px-4 py-3 grid grid-cols-3 items-center">
+
+        <div class="flex items-center">
+            <button id="menu-btn" class="md:hidden text-xl text-[#2A2A24] focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="hidden md:flex items-center gap-7 text-[13px] font-medium tracking-wide uppercase text-black/85">
+                <ul class="flex gap-6">
+                    <li><a href="./index.html" class="hover:text-gold transition">Home</a></li>
+                    <li><a href="./moreproduct.html" class="hover:text-gold transition">Shop</a></li>
+                    <li><a href="#">Skin</a></li>
+                    <li><a href="#">Body</a></li>
+                    <li><a href="./Blog.html">Blogs</a></li>
+                    <li><a href="./aboutus.html">About Us</a></li>
                 </ul>
-            </nav>
-        </aside>
+            </div>
+        </div>
 
-       <main class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm border border-[#ECE4CE] mt-10">
-    <h1 class="text-xl font-serif font-semibold text-ink mb-4">
-        <i class="fa-solid fa-images text-clay mr-2"></i>Update Homepage Banner Slider
-    </h1>
-    
-    <div class="border-2 border-dashed border-[#DCD3BA] bg-[#FAF7EE] p-6 rounded-xl text-center relative group hover:border-clay transition">
-        <label for="slideimage" class="cursor-pointer block">
-            <i class="fa-solid fa-cloud-arrow-up text-3xl text-ash group-hover:text-clay transition mb-2"></i>
-            <span class="block text-sm font-semibold text-ink">Choose Image or GIF</span>
-            <span class="block text-xs text-ash mt-1">Recommended resolution: <strong>1920 × 512 px</strong></span>
-            <span class="block text-[11px] text-clay font-medium mt-0.5">(Max Size: 5MB | Formats: JPG, PNG, WEBP, GIF)</span>
-        </label>
-        
-        <input type="file" name="slideimage" id="slideimage" accept="image/*, image/gif" class="hidden">
+        <div class="flex justify-center items-center p-2">
+            <span class="h-[40px] md:h-[50px] flex items-center">
+                <img src="./static/logo2.png" alt="logo" class="w-[140px] md:w-[170px] h-fit object-contain">
+            </span>
+        </div>
+
+       <div id="nav-auth-container" class="flex items-center justify-end gap-5 normal-case">
+    <button id="search-open-btn" class="transition p-1 text-base text-black focus:outline-none hover:text-gold">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+
+    <div id="search-container" class="search-hidden">
+        <input type="text" placeholder="Search yahan karein..." id="search-input" class="text-black">
+        <button id="search-close-btn">&times;</button>
     </div>
 
-    <div id="preview-container" class="hidden mt-6">
-        <p class="text-xs font-bold text-ash uppercase tracking-wider mb-2">Live Preview (Aspect Ratio 1920x512):</p>
-        <div class="w-full h-[15vh] border border-[#ECE4CE] rounded-lg overflow-hidden bg-gray-100">
-            <img id="banner-preview-img" src="" alt="Preview" class="w-full h-full object-cover">
-        </div>
-        <button id="upload-submit-btn" class="w-full bg-clay hover:bg-clay-dark text-white font-semibold text-xs tracking-wider uppercase py-3 rounded-lg mt-4 transition hidden">
-            Confirm & Upload Banner
-        </button>
+    <a href="./cart.html" class="relative text-base text-black hover:text-gold transition">
+        <i class="fa-solid fa-shopping-cart"></i>
+        <span id="global-cart-badge" class="absolute -top-2 -right-2 bg-clay text-[10px] leading-none px-1.5 py-1 rounded-full text-white">0</span>
+    </a>
+
+   <div id="auth-actions" class="flex items-center gap-4">
+    <a href="./login.html" class="text-base text-black hover:text-gold transition">
+        <i class="fa-solid fa-user"></i>
+    </a>
+</div>
+</div>
+
     </div>
-</main>
-        </div>
-    
-</body>
-</html>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gold/10 px-4 py-4 text-sm font-medium uppercase tracking-wide text-black/85">
+        <ul class="flex flex-col gap-4">
+            <li><a href="./index.html" class="block hover:text-gold transition py-1">Home</a></li>
+            <li><a href="./moreproduct.html" class="block hover:text-gold transition py-1">Shop</a></li>
+            <li><a href="#">Skin</a></li>
+            <li><a href="#">Body</a></li>
+            <li><a href="./Blog.html">Blogs</a></li>
+            <li><a href="./aboutus.html">About Us</a></li>
+        </ul>
+    </div>
+</nav>

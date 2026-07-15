@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const ProductVariantSchema = new mongoose.Schema({
     volume: { 
         type: String,
-        enum: ['30ml', '50ml', '100ml', '200ml'], 
+        enum: ['100g', '50g','30ml','50ml', '100ml', '200ml'], 
         required: [true, 'Variant ka volume zaroori hai']
     },
     price: { 

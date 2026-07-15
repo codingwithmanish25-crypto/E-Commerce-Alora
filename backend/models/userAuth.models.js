@@ -1,34 +1,53 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String }, // Optional for Google Users
-  isGoogleUser: { type: Boolean, default: false },
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { 
+    type: String,
+     required: true,
+    minlength: [6, "Password kam se kam 6 characters ka hona chahiye!"], 
+    maxlength: [100, "Password 100 characters se bada nahi ho sakta!"] ,
+  },
+  phone: { 
+    type: String, 
+    required: [true, "Phone number zaroori hai!"],
+    unique: true, 
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^[0-9]{10}$/.test(v);
+      },
+      message: props => `${props.value} ek valid 10-digit phone number nahi hai!`
+    }
+  },
+  resetToken: { type: String, default: null },
+  resetTokenExpiry: { type: Date, default: null }
 }, { timestamps: true });
 
-// Hash password before saving
-userSchema.pre('save', async function (next) {
-  // Agar password modify nahi hua ya fir password exist hi nahi karta (Google Users)
-  if (!this.isModified('password') || !this.password) return next();
-  
+
+userSchema.pre('save', async function () {
+  // Only hash the password if it has been modified (or is new)
+  if (!this.isModified('password')) return;
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    next();
   } catch (error) {
-    next(error);
+    throw error; // Mongoose automatically handles thrown errors in async hooks
   }
 });
 
-// Compare password
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  if (!this.password) return false; // Agar password nahi hai (Google user trying standard login)
-  return await bcrypt.compare(enteredPassword, this.password);
+// Your comparison method
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  // Ensure we actually have arguments to compare
+  if (!candidatePassword || !this.password) {
+    throw new Error("Illegal arguments: missing password string to compare");
+  }
+  return await bcrypt.compare(candidatePassword, this.password);
 };
+
 
 const User = mongoose.model('User', userSchema);
 export default User;

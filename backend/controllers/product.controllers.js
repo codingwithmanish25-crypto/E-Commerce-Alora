@@ -3,21 +3,21 @@ import SimpleProduct from "../models/product.models.js"
 import fs, { unlink } from 'fs';
 import path from "path";
 
- // Schema import kiya
+
 
 // 1. CREATE (Naya Product Add Karna)
     export const addnewproduct = async (req, res) => {
     try {
-        // 1. Saare normal text fields req.body se nikalein
+        
         const { name, description, batchNumber, rating, totalReviews, isAvailable } = req.body;
         
-        // 2. Frontend se jo variants stringify hokar aaya hai, use parse karein
+      
         let variants = [];
         if (req.body.variants) {
             variants = JSON.parse(req.body.variants);
         }
 
-        // 3. Naya product object banayein naye Schema ke mutabik
+       
         const addproduct = {
             name,
             description,
@@ -25,19 +25,19 @@ import path from "path";
             rating,
             totalReviews,
             isAvailable,
-            variants // Parsed array direct yahan pass ho jayegi
+            variants 
         };
 
-        // 4. File upload check karein
+      
         if (req.file) {
             addproduct.imagepath = `/uploads/${req.file.filename}`;
         }
 
-        // 5. Database mein save karein
+      
         const newProduct = new SimpleProduct(addproduct);
         const savedProduct = await newProduct.save();
         
-        // Response return karein
+
         res.status(201).json(savedProduct);
 
     } catch (err) {

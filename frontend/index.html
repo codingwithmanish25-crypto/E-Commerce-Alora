@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alora Radiance</title>
- <!-- Fonts Preconnect (इसे एक ही बार रखना काफी है) -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- 1. नया फ़ॉन्ट: PT Sans (यह हमने जोड़ा है) -->
+
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
-<!-- 2. पुराने फ़ॉन्ट्स (इन्हें वैसे ही रहने दिया ताकि बाकी स्टाइल न बिगड़े) -->
+
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- 3. CDNs और Stylesheets (जैसे थे वैसे ही) -->
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -189,65 +189,7 @@
 
 
 
- <nav class="bg-white text-parchment sticky top-0 z-50 border-b border-gold/20">
-    <div class="max-w-7xl mx-auto px-4 py-3 grid grid-cols-3 items-center">
-        
-        <div class="flex items-center">
-            <button id="menu-btn" class="md:hidden text-xl text-[#2A2A24] focus:outline-none">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <div class="hidden md:flex items-center gap-7 text-[13px] font-medium tracking-wide uppercase text-black/85">
-                <ul class="flex gap-6">
-                    <li><a href="#" class="hover:text-gold transition">Home</a></li>
-                    <li><a href="./moreproduct.html" class="hover:text-gold transition">Shop</a></li>
-                    <li><a href="#">Skin</a></li>
-                    <li><a href="#">Body</a></li>
-                    <li><a href="./Blog.html">Blogs</a></li>
-                    <li><a href="./aboutus.html">About Us</a></li>
-                    
-                </ul>
-            </div>
-        </div>
-        
-       <div class="flex justify-center items-center p-2">
-    <span class="h-[40px] md:h-[50px] flex items-center">
-        <img src="./static/logo2.png" alt="logo" class="w-[140px] md:w-[170px] h-fit object-contain">
-    </span>
-</div>
-        
-        <div class="flex items-center justify-end gap-5 normal-case">
-            <button id="search-open-btn" class="transition p-1 text-base text-black focus:outline-none hover:text-gold ">
-             <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-
-            <div id="search-container" class="search-hidden">
-            <input type="text" placeholder="Search yahan karein..." id="search-input" class="text-black">
-            <button id="search-close-btn">&times;</button>
-            </div>
-           <a href="./cart.html" class="relative text-base text-black hover:text-gold transition">
-            <i class="fa-solid fa-shopping-cart"></i>
-             <span id="global-cart-badge" class="absolute -top-2 -right-2 bg-clay text-[10px] leading-none px-1.5 py-1 rounded-full text-white">0</span>
-            </a>
-            <a href="./login.html" class="text-base text-black hover:text-gold transition"><i class="fa-solid fa-user"></i></a>
-        </div>
-        
-    </div>
-
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gold/10 px-4 py-4 text-sm font-medium uppercase tracking-wide text-black/85">
-        <ul class="flex flex-col gap-4">
-            <li><a href="#" class="block hover:text-gold transition py-1">Home</a></li>
-            <li><a href="./moreproduct.html" class="block hover:text-gold transition py-1">Shop</a></li>
-
-
-                    <li><a href="#">Skin</a></li>
-                    <li><a href="#">Body</a></li>
-                    <li><a href="./Blog.html">Blogs</a></li>
-                    <li><a href="./aboutus.html">About Us</a></li>
-           
-        </ul>
-    </div>
-</nav>
+<div id="navbar-placeholder"></div>
 
 
 <div class="flex w-full h-[13vh] md:h-[60vh] overflow-hidden relative group">
@@ -375,7 +317,7 @@
         <div class="greensection overflow-hidden w-full py-4 ">
             <div id="productSliderWrapper" class="flex  gap-6 transition-transform duration-500 ease-out style-none" style="transform: translateX(0px);">
 
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
+    <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
     
     <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
         New
@@ -395,10 +337,10 @@
 
         <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
             <div class="flex gap-1.5 items-center">
-               <button onclick="changeCardSize('100ml', 350, 500, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-<button onclick="changeCardSize('200ml', 600, 850, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
+             <button onclick="changeCardSize('100ml', 350, 500, this)" 
+             class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
+            <button onclick="changeCardSize('200ml', 600, 850, this)" 
+             class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
             </div>
             <div class="flex items-center gap-1.5">
                 <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
@@ -665,12 +607,6 @@
                     <div id="productSliderWrapper" class="flex gap-6 transition-transform duration-500 ease-in-out">
                   </div>
             </div>
-
-              
-
-               
-
-
             </div>
         </div>
     </section>
@@ -724,13 +660,13 @@
         </div>
     </section>
 
-    <!-- ============ WHY GLOW RITUAL ============ -->
+    <!-- ============ WHY Alora Radiance ============ -->
     <section class="bg-parchment py-20 border-b border-[#E7DFC7]">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-3">Our Standard</p>
             <h2 class="text-3xl md:text-4xl font-robot  font-medium text-ink mb-3">The Future of Personal Care is Here</h2>
             <p class="text-sm text-ash max-w-xl mx-auto mb-14 leading-relaxed">
-                Embrace Glow Ritual, where each element is chosen for its scientific merit, offering you authentic, effective skincare solutions.
+                Embrace Alora Radiance, where each element is chosen for its scientific merit, offering you authentic, effective skincare solutions.
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -826,7 +762,7 @@
                         <div>
                             <h4 class="text-sm font-robot font-semibold text-ink mb-1">FDA Approved Standards</h4>
                             <p class="text-xs text-ash leading-relaxed">
-                                Glow Ritual conforms perfectly to international systems, making products 100% safe for regular use.
+                                Alora Radiance conforms perfectly to international systems, making products 100% safe for regular use.
                             </p>
                         </div>
                     </div>
@@ -975,12 +911,12 @@
                 <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-3">Our Story</p>
                 <h2 class="text-3xl font-robot  font-medium text-ink mb-5 leading-tight">Started in a small kitchen, not a boardroom.</h2>
                 <p class="text-sm text-[#5C594E] leading-relaxed mb-4">
-                    Glow Ritual began with a simple frustration: skincare labels nobody could actually read. So we set out to build a brand where every jar lists exactly what's inside, at exactly what concentration — formulated in our own labs, tested on real skin, and never on animals.
+                    Alora Radiance began with a simple frustration: skincare labels nobody could actually read. So we set out to build a brand where every jar lists exactly what's inside, at exactly what concentration — formulated in our own labs, tested on real skin, and never on animals.
                 </p>
                 <p class="text-sm text-[#5C594E] leading-relaxed mb-6">
                     Today that same promise powers everything we make, from our bestselling Daily Radiance Cream to the tree we plant with every single order.
                 </p>
-                <p class="font-robot  text-ink text-lg">— Team Glow Ritual</p>
+                <p class="font-robot  text-ink text-lg">— Team Alora Radiance</p>
             </div>
         </div>
     </section>
@@ -1114,260 +1050,20 @@
         </div>
     </section>
 
-    <!-- ============ NEWSLETTER ============ -->
-  <!--
-    <section class="bg-clay py-14">
-        <div class="max-w-3xl mx-auto px-4 text-center">
-            <p class="text-xs font-bold tracking-[0.25em] uppercase text-white/80 mb-2">Stay in the Ritual</p>
-            <h2 class="text-2xl md:text-3xl font-robot  font-medium text-white mb-6">Get 10% off your first order</h2>
-            <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-md text-sm text-ink focus:outline-none focus:ring-2 focus:ring-white/60">
-                <button type="button" class="bg-ink text-white px-6 py-3 rounded-md text-sm font-semibold tracking-wide uppercase hover:bg-ink-light transition">Subscribe</button>
-            </form>
-            <p class="text-[11px] text-white/70 mt-4">No spam, just glow — unsubscribe anytime.</p>
-        </div>
-    </section>
--->
+ 
     <!-- ============ FOOTER ============ -->
-    <footer class="bg-black  text-gold/80 pt-16 pb-6 mt-10 border-t border-gold/20">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
-            <div>
-               
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Company Overview</h3>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="./aboutus.html" class="hover:text-gold transition">About Our Brand</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Terms &amp; Conditions</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Corporate Governance</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Grievance Redressal</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Quick Links</h3>
-                <ul class="space-y-2.5 text-sm mb-8">
-                    <li><a href="#" class="hover:text-gold transition">Knowledge Base FAQs</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Return &amp; Refund Policy</a></li>
-                   
-                </ul>
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-3">Follow Along</h3>
-                <div class="flex gap-4 text-lg">
-                    <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
-                    <a href="https://www.instagram.com/aloraradiance?igsh=MTNmOHI1ejZoZzBnMQ==" target="_blank" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-youtube text-sm"></i></a>
-                    <a href="https://web.whatsapp.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-whatsapp text-sm"></i></a>
-                </div>
-            </div>
-
-            <div class="bg-ink-light p-6 rounded-xl border border-white/10">
-                <h3 class="text-parchment font-robot font-semibold text-lg mb-4">Get in Touch</h3>
-                <form class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Name</label>
-                        <input type="text" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Email</label>
-                        <input type="email" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">MESSAGE</label>
-                        <textarea name="message" placeholder="Type your message here..." class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 fouces:ring-gold border border-white/10"></textarea>
-                    </div>
-                    <button type="button" class="w-full bg-clay hover:bg-clay-dark text-white font-semibold py-2.5 rounded-md text-xs transition tracking-[0.15em] uppercase mt-2">Submit</button>
-                </form>
-            </div>
-        </div>
-
-        
-
-        <div class="text-center pt-6 text-xs text-parchment/40">
-            Copyright © 2026 Glow Ritual ❤️
-        </div>
-    </footer>
+  <div id="footer-placeholder"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/include.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/cart.js"></script>
-   
-    <script>
-
-        const backendUrl = "http://localhost:5000";
-let currentScrollAmount = 0;
-
-// 1. Backend se products fetch karke slider me render karne ka function
-async function loadSliderProducts() {
-    const wrapper = document.getElementById('productSliderWrapper');
-    if(!wrapper) return;
-
-    try {
-        const response = await fetch(`${backendUrl}/api/product/all`);
-        const products = await response.json();
-        
-        if (!response.ok) throw new Error(products.error || "Data fetch nahi ho paya");
-
-        // Sirf top 5 products lene ke liye slice lagaya
-        const top5Products = products.slice(0, 5);
-
-        if (top5Products.length === 0) {
-            wrapper.innerHTML = `<p class="text-ash px-6 py-4 font-medium text-center w-full">No active products found.</p>`;
-            return;
-        }
-
-        // HTML String Generation
-        wrapper.innerHTML = top5Products.map((product, index) => {
-            const fullImgUrl = `${backendUrl}${product.imagepath}`;
-            
-            // Star rating ka setup (Max 5 stars)
-            const ratingCount = Math.round(product.rating || 4);
-            let starsHTML = '';
-            for (let i = 1; i <= 5; i++) {
-                starsHTML += i <= ratingCount 
-                    ? `<i class="fa-solid fa-star"></i>` 
-                    : `<i class="fa-regular fa-star text-[#D9D2BC]"></i>`;
-            }
-
-            // Variants ke dynamic size buttons setup karein
-            let sizeButtonsHTML = '';
-            let initialPrice = 0;
-            let initialComparePrice = 0;
-
-            if (product.variants && product.variants.length > 0) {
-                // Default ke liye pehla variant select rakhenge
-                initialPrice = product.variants[0].price;
-                initialComparePrice = product.variants[0].comparePrice || '';
-
-                sizeButtonsHTML = product.variants.map((v, vIndex) => {
-                    const isActive = vIndex === 0;
-                    const activeClasses = isActive 
-                        ? 'bg-ink text-parchment border-ink' 
-                        : 'border-[#DCD3BA] text-ash hover:border-ink';
-
-                    return `
-                        <button 
-                            onclick="changeCardSize('${v.volume}', ${v.price}, ${v.comparePrice || 0}, this)" 
-                            class="size-btn text-xs  border px-2.5 py-1.5 rounded-full transition font-semibold tracking-wide ${activeClasses}"
-                        >
-                            ${v.volume}
-                        </button>
-                    `;
-                }).join('');
-            }
-
-           return `
-<div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
+    <script type="module" src="./js/auth.js"></script>
     
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="${fullImgUrl}" alt="${product.name}" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110" onerror="this.src='./static/alora image1.jpeg';">
-        </a>
-    </div>
+    <script type="module" src="./js/app.js"></script>
 
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">${product.name}</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            ${product.description || 'No description available'}
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-                ${sizeButtonsHTML}
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-sans font-semibold text-ink text-lg">₹${initialPrice}</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">${initialComparePrice ? '₹' + initialComparePrice : ''}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37]">${starsHTML}</div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-</div>
-`;
-        }).join(" ");
-
-    } catch (err) {
-        console.error("Slider loading failed:", err);
-    }
-}
-
-// 2. Card ke andar specific variant button click handle karne ka function
-function changeCardSize(volume, price, comparePrice, buttonElement) {
-    const card = buttonElement.closest('.product-card');
-    
-    // Sabhi sibling buttons se active classes hatao aur unhe normal banao
-    const buttons = card.querySelectorAll('.size-btn');
-    buttons.forEach(btn => {
-        btn.classList.remove('bg-ink', 'text-parchment', 'border-ink');
-        btn.classList.add('border-[#DCD3BA]', 'text-ash');
-    });
-
-    // Jis button par click kiya hai use select (Active) karo
-    buttonElement.classList.add('bg-ink', 'text-parchment', 'border-ink');
-    buttonElement.classList.remove('border-[#DCD3BA]', 'text-ash');
-
-    // UI par price aur comparePrice update karo
-    card.querySelector('.product-price').innerText = `₹ ${price}`;
-    const mrpElement = card.querySelector('.product-mrp');
-    if (comparePrice > 0) {
-        mrpElement.innerText = `₹ ${comparePrice}`;
-        mrpElement.style.display = 'inline';
-    } else {
-        mrpElement.style.display = 'none';
-    }
-}
-
-// 3. Slider navigation action trigger logic (Aapka purana function unmodified)
-function slideProducts(direction) {
-    const wrapper = document.getElementById('productSliderWrapper');
-    const firstCard = wrapper.querySelector('.product-card');
-    if (!firstCard) return;
-
-    const cardWidth = firstCard.offsetWidth;
-    const gap = 24; 
-    const scrollStep = cardWidth + gap;
-    const maxScroll = wrapper.scrollWidth - wrapper.parentElement.offsetWidth;
-
-    if (direction === 'right') {
-        currentScrollAmount += scrollStep;
-        if (currentScrollAmount > maxScroll) {
-            currentScrollAmount = 0; 
-        }
-    } else if (direction === 'left') {
-        currentScrollAmount -= scrollStep;
-        if (currentScrollAmount < 0) {
-            currentScrollAmount = maxScroll > 0 ? maxScroll : 0; 
-        }
-    }
-
-    wrapper.style.transform = `translateX(-${currentScrollAmount}px)`;
-}
-
-// DOM load hote hi dono functions initiate ho jayein
-document.addEventListener('DOMContentLoaded', () => {
-    loadSliderProducts();
-});
-    </script>
 
 </body>
 </html>
+

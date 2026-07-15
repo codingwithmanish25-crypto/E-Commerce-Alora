@@ -1,144 +1,136 @@
-import User from '../models/userAuth.models.js';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
-import { OAuth2Client } from 'google-auth-library';
+import User from "../models/UserAuth.models.js"; // Note: Always include the file extension .js in local imports
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
+// Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
-// @desc    Register new user
-export const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+// ==========================================
+// 1. REGISTER USER (Updated with Phone & Uppercase Name)
+// ==========================================
+export const register = async (req, res, next) => {
   try {
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Please fill all fields' });
+    // FIX: req.body se 'phone' ko bhi destructure kiya
+    const { name, email, password, phone } = req.body; 
+    
+    // Check if phone was sent from frontend/client
+    if (!phone) {
+      return res.status(400).json({ message: 'Phone number zaroori hai!' });
     }
 
-    const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: 'User already exists' });
+    // Email double registration check
+    let userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ message: 'Email already registered.' });
 
-    const user = await User.create({ name, email, password });
-    res.status(201).json({ token: generateToken(user._id), name: user.name });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    // Phone double registration check (Kyunki schema me unique: true hai)
+    let phoneExists = await User.findOne({ phone });
+    if (phoneExists) return res.status(400).json({ message: 'Phone number already registered.' });
 
-// @desc    Login user
-export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Please provide email and password' });
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-
-    if (user.isGoogleUser) {
-      return res.status(400).json({ message: 'This email is registered via Google. Please use Google Login.' });
-    }
-
-    const isMatch = await user.matchPassword(password);
-    if (isMatch) {
-      res.json({ token: generateToken(user._id), name: user.name });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// @desc    Google Login / Registration
-export const googleLogin = async (req, res) => {
-  const { credential } = req.body;
-  try {
-    const ticket = await client.verifyIdToken({
-      idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+    // FIX: Name ko uppercase (.toUpperCase()) karke database me save kar rahe hain
+    const user = await User.create({ 
+      name: name.toUpperCase(), 
+      email, 
+      password, 
+      phone 
     });
-    const { name, email } = ticket.getPayload();
 
-    let user = await User.findOne({ email });
-    if (!user) {
-      user = await User.create({ name, email, isGoogleUser: true });
-    }
-
-    res.json({ token: generateToken(user._id), name: user.name });
+    res.status(201).json({ message: 'Registration successful!' });
   } catch (error) {
-    res.status(400).json({ message: 'Google authentication failed' });
+    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
   }
 };
 
-// @desc    Forgot Password - Send Email
-export const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+// ==========================================
+// 2. LOGIN USER
+// ==========================================
+export const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'User not found' }); // Standard 404 used here
-    if (user.isGoogleUser) return res.status(400).json({ message: 'Google accounts do not use local passwords' });
+    const { email, password } = req.body;
 
-    const resetToken = crypto.randomBytes(20).toString('hex');
-    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 Minutes
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({ message: 'Invalid email or password.' });
+    }
+
+    const token = generateToken(user._id);
+    
+    // Response me user object ke sath user.phone ko bhi bhej diya hai taaki frontend use use kar sake
+    res.status(200).json({ 
+      message: 'Login successful!', 
+      token, 
+      user: { 
+        name: user.name, 
+        email: user.email,
+        phone: user.phone 
+      } 
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
+  }
+};
+
+// 3. FORGOT PASSWORD
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: 'Email is required.' });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'No user found with this email.' });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    
+    user.resetToken = token;
+    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`;
+    const resetUrl = `http://127.0.0.1:5500/frontend/reset-password.html?token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-      port: process.env.SMTP_PORT || 587,
-      auth: { 
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS 
-      },
+    return res.status(200).json({ 
+      message: 'Reset token generated successfully!',
+      resetUrl 
     });
-
-    await transporter.sendMail({
-      from: `"Glow Ritual Support" <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: 'Password Reset Request',
-      text: `You requested a password reset. Please click this link: \n\n ${resetUrl}`,
-    });
-
-    res.json({ message: 'Email sent successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-// @desc    Reset Password
+// 4. RESET PASSWORD
 export const resetPassword = async (req, res) => {
-  const { token } = req.params;
-  const { password } = req.body;
-
   try {
+    const { token } = req.params; 
+    const { password } = req.body;
+
     if (!password) {
-      return res.status(400).json({ message: 'Password is required' });
+      return res.status(400).json({ message: 'New password is required.' });
     }
 
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const user = await User.findOne({
-      resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: Date.now() },
-    });
+    const user = await User.findOne({ resetToken: token });
 
-    if (!user) return res.status(400).json({ message: 'Invalid or expired token' });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid token. User not found with this token.' });
+    }
+
+    if (user.resetTokenExpiry && user.resetTokenExpiry < Date.now()) {
+      return res.status(400).json({ 
+        message: 'Token has expired.', 
+        expiryTime: user.resetTokenExpiry, 
+        currentTime: Date.now() 
+      });
+    }
 
     user.password = password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    
     await user.save();
 
-    res.json({ message: 'Password updated successfully' });
+    return res.status(200).json({ message: 'Password reset successful!' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

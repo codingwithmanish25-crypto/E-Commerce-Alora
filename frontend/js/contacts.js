@@ -50,7 +50,6 @@ export function renderNavbarState() {
             const user = JSON.parse(storedUser);
             const displayName = user.name || "User";
 
-            // Hi, USERNAME (Uppercase formatting optimized)
             authActions.innerHTML = `
                 <div class="flex items-center gap-3 text-sm font-medium text-black normal-case">
                     <span>Hi, <b class="text-[#2A2A24] font-bold uppercase">${displayName}</b></span>
@@ -60,7 +59,6 @@ export function renderNavbarState() {
                 </div>
             `;
 
-            // Logout event attach
             document.getElementById("logout-btn").addEventListener("click", () => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
@@ -73,7 +71,6 @@ export function renderNavbarState() {
             localStorage.removeItem("token");
         }
     } else {
-        // Default login link icon
         authActions.innerHTML = `
             <a href="./login.html" class="text-base text-black hover:text-gold transition">
                 <i class="fa-solid fa-user"></i>
@@ -83,7 +80,7 @@ export function renderNavbarState() {
 }
 
 // ==========================================
-// 3. LISTEN TO PARTIALS LOADED (Include.js Support)
+// 3. LISTEN TO PARTIALS LOADED
 // ==========================================
 document.addEventListener("partialsLoaded", () => {
     console.log("Navbar successfully injected! Applying states...");
@@ -94,23 +91,33 @@ if (document.readyState === "complete" || document.readyState === "interactive")
     setTimeout(renderNavbarState, 150);
 }
 
-
-
-
-//======================== form submit to website footer part ======================
+// ==========================================
+// 4. CONTACT FORM SUBMISSION (SINGLE INSTANCE WITH DEBOUNCE)
+// ==========================================
+let isSubmitting = false; 
 
 document.addEventListener("submit", async (e) => {
     if (e.target && e.target.id === "contactForm") {
         e.preventDefault();
 
+        // Agar process already chal raha hai, to click ignore hoga
+        if (isSubmitting) return;
+
         const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const message = document.getElementById("message").value;
 
-        console.log("Form submit caught! Sending data:", { name, email, message });
-
         try {
+            isSubmitting = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Submitting...";
+            }
+
+            console.log("Form submit caught! Sending data:", { name, email, message });
+
             const response = await fetch(`${BASE_URL}/api/queries`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -121,13 +128,27 @@ document.addEventListener("submit", async (e) => {
             console.log("Response:", data);
 
             if (response.ok) {
-                form.reset();
+                // Success popup custom modal ke sath
+                showSuccessModal(
+                    "Success!", 
+                    "Aapki query successfully save ho gayi hai. Hum aapse jald hi contact karenge.", 
+                    () => {
+                        form.reset(); 
+                    }
+                );
             } else {
                 alert("Error: " + (data.message || "Something went wrong"));
             }
         } catch (error) {
             console.error("Fetch Error:", error);
-            alert("Server connected nahi hai.");
+            alert("Server connected nahi hai. Please try again later.");
+        } finally {
+            // Sahi timing par state aur button reset karna
+            isSubmitting = false;
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit";
+            }
         }
     }
 });
