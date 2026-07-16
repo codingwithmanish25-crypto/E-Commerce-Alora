@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop | Glow Ritual</title>
+    <title>Alora Radiance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -79,20 +79,24 @@
                     </select>
                 </div>
 
-                <div class="mb-6">
-                    <label class="block text-xs font-bold text-ash uppercase tracking-wider mb-2">Collection</label>
-                    <div class="space-y-2.5">
-                        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
-                            <input type="checkbox" name="category" value="skincare" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Skincare
-                        </label>
-                        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
-                            <input type="checkbox" name="category" value="haircare" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Haircare
-                        </label>
-                        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
-                            <input type="checkbox" name="category" value="bodycare" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Bodycare
-                        </label>
-                    </div>
-                </div>
+<!-- ============ UPDATE CHECKBOXES IN YOUR HTML ============ -->
+<div class="mb-6">
+    <label class="block text-xs font-bold text-ash uppercase tracking-wider mb-2">Collection</label>
+    <div class="space-y-2.5">
+        <!-- <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
+            <input type="checkbox" name="category" value="skin" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Skin
+        </label> -->
+        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
+            <input type="checkbox" name="category" value="face" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Face
+        </label>
+        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
+            <input type="checkbox" name="category" value="cream" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Cream
+        </label>
+        <label class="flex items-center text-sm text-[#3d3b34] cursor-pointer hover:text-ink">
+            <input type="checkbox" name="category" value="body" onchange="filterProducts()" class="rounded border-[#DCD3BA] text-clay focus:ring-clay mr-2.5"> Body
+        </label>
+    </div>
+</div>
 
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-ash uppercase tracking-wider mb-2">Max Price</label>
@@ -135,73 +139,34 @@
 
         </div>
 
-        <div class="w-40 flex justify-self-center top-1 mt-8">
-            <button class="w-full bg-ink text-parchment py-3 rounded-md font-semibold text-xs tracking-[0.15em] uppercase shadow-sm hover:bg-ink-light transition flex items-center justify-center gap-2">Load More</button>
-        </div>
+     
     </main>
 
     <!-- ============ FOOTER (matches index.html) ============ -->
-  <footer class="bg-black  text-gold/80 pt-16 pb-6 mt-10 border-t border-gold/20">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
-            <div>
-               
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Company Overview</h3>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="./aboutus.html" class="hover:text-gold transition">About Our Brand</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Terms &amp; Conditions</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Corporate Governance</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Grievance Redressal</a></li>
-                </ul>
-            </div>
 
-            <div>
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-4">Quick Links</h3>
-                <ul class="space-y-2.5 text-sm mb-8">
-                    <li><a href="#" class="hover:text-gold transition">Knowledge Base FAQs</a></li>
-                    <li><a href="#" class="hover:text-gold transition">Return &amp; Refund Policy</a></li>
-                   
-                </ul>
-                <h3 class="text-parchment font-bold text-xs uppercase tracking-[0.2em] mb-3">Follow Along</h3>
-                <div class="flex gap-4 text-lg">
-                    <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-facebook-f text-sm"></i></a>
-                    <a href="https://www.instagram.com/aloraradiance?igsh=MTNmOHI1ejZoZzBnMQ==" target="_blank" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-youtube text-sm"></i></a>
-                    <a href="https://web.whatsapp.com/" class="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:bg-gold hover:text-ink hover:border-gold transition"><i class="fa-brands fa-whatsapp text-sm"></i></a>
-                </div>
-            </div>
-
-            <div class="bg-ink-light p-6 rounded-xl border border-white/10">
-                <h3 class="text-parchment font-robot font-semibold text-lg mb-4">Get in Touch</h3>
-                <form class="space-y-3">
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Name</label>
-                        <input type="text" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">Email</label>
-                        <input type="email" class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 focus:ring-gold border border-white/10">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] uppercase font-semibold tracking-wider text-parchment/50 mb-1">MESSAGE</label>
-                        <textarea name="message" placeholder="Type your message here..." class="w-full bg-ink rounded-md p-2.5 text-sm text-parchment focus:outline-none focus:ring-1 fouces:ring-gold border border-white/10"></textarea>
-                    </div>
-                    <button type="button" class="w-full bg-clay hover:bg-clay-dark text-white font-semibold py-2.5 rounded-md text-xs transition tracking-[0.15em] uppercase mt-2">Submit</button>
-                </form>
-            </div>
-        </div>
-
-        
-
-        <div class="text-center pt-6 text-xs text-parchment/40">
-            Copyright © 2026 Glow Ritual ❤️
-        </div>
     <div id="footer-placeholder"></div>
+ <!-- ============Popup Form to New Lead============ -->
+   <div id="lead-modal-container"></div>
+
+
         <script src="./js/include.js"></script>
 
    <script src="./js/moreproduct.js"></script>
+   <script type="module" src="./js/moreproduct.js"></script>
+
 
    <script src="./js/app.js"></script>
    <script type="module" src="./js/contacts.js"></script>
+
+   <script type="module" src="./js/lead.js"></script>
+    <script>
+        // Modal ko background me dynamically pull karne ke liye script
+        fetch('./lead.html')
+            .then(response => response.text())
+            .then(htmlContent => {
+                document.getElementById('lead-modal-container').innerHTML = htmlContent;
+            })
+            .catch
+        </script>
 </body>
 </html>

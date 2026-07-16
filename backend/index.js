@@ -4,6 +4,7 @@ import db from "./config/db.js"
 import productRouter from "./routes/product.routes.js"
 import authRoutes from "./routes/auth.routes.js"
 import queryRoutes from "./routes/query.routes.js"
+import leadRoutes from "./routes/lead.routes.js"
 import dotenv from "dotenv"
 import dns from "dns"
 
@@ -24,6 +25,7 @@ app.use('/uploads', express.static('uploads'));
 app.use("/api/product", productRouter)
 app.use('/api/auth', authRoutes);
 app.use('/api/queries', queryRoutes);
+app.use('/api/lead', leadRoutes);
 
 app.use((err, req, res, next) => {
   // 1. Force log the actual underlying problem to your terminal

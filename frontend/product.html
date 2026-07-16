@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glow Ritual | Daily Radiance Cream</title>
+    <title>Alora Radiance</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,238 +51,121 @@
         </nav>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-[#ECE4CE]">
+   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-[#ECE4CE]">
 
-            <div class="flex flex-col gap-4">
-               <div class="imagesection bg-white rounded-2xl flex justify-center items-center h-[400px] overflow-hidden border border-[#E7DFC7]">
-                   <img id="main-product-image" src="./static/product4.png" alt="Glow Ritual Cream" class="h-full w-auto object-contain transition-transform duration-300 hover:scale-105">
-                </div>
-                <div class="flex gap-3 justify-center">
-                    <button onclick="changeImage('./static/product4.png')" class="w-20 h-20 bg-sage-light  rounded-lg border-2 border-clay overflow-hidden flex items-center justify-center">
-                        <img src="./static/product4.png" class="max-h-full object-contain" alt="Thumbnail 1">
-                    </button>
-                    <button onclick="changeImage('./static/product3.png')" class="w-20 h-20 bg-sage-light  rounded-lg border border-[#DCD3BA] hover:border-clay overflow-hidden flex items-center justify-center transition">
-                        <img src="./static/product3.png" class="max-h-full object-contain opacity-70" alt="Thumbnail 2">
-                    </button>
-                </div>
+        <div class="flex flex-col gap-4">
+            <div class="imagesection bg-white rounded-2xl flex justify-center items-center h-[400px] overflow-hidden border border-[#E7DFC7]">
+                <img id="main-product-image" src="" alt="Loading..." class="h-full w-auto object-contain transition-transform duration-300 hover:scale-105">
             </div>
-
-            <div class="flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-sage/15 text-sage text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Best Seller</span>
-                        <span class="bg-gold/15 text-clay-dark text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">100% Vegan</span>
-                    </div>
-                    <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">Batch GR-014</p>
-                    <h1 class="text-2xl sm:text-3xl font-robot font-medium text-ink mb-3">Alora Radiance Cream</h1>
-
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="flex text-gold text-sm">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star text-[#D9D2BC]"></i>
-                        </div>
-                        <span class="text-xs text-ash font-medium">(4.0 / 5.0 out of 142 ratings)</span>
-                    </div>
-
-                    <div class="mb-6 flex items-baseline gap-3">
-                        <span id="product-price" class="text-3xl font-serif font-semibold text-ink">₹ 300</span>
-                        <span id="product-mrp" class="text-sm text-ash line-through">₹ 450</span>
-                        <span class="text-xs font-bold text-sage bg-sage-light px-2 py-1 rounded">(Save 33%)</span>
-                    </div>
-
-                    <hr class="border-[#ECE4CE] my-6">
-
-                    <p class="text-[#5C594E] text-sm leading-relaxed mb-6">
-                        Experience instant hydration and an effortless, glowing complexion. Formulated with skin-loving antioxidants and vitamin C, this daily radiance cream protects your skin barrier while bringing out your natural, inner brightness. Perfect for all skin types.
-                    </p>
-
-                    <div class="mb-6">
-                        <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Select Size</h3>
-                        <div class="flex gap-3">
-                            <button onclick="selectSize('100ml', 300, 450, this)" class="size-btn text-sm border-2 border-ink px-4 py-2 rounded-full bg-ink text-parchment font-semibold transition">
-                                100ml
-                            </button>
-                            <button onclick="selectSize('200ml', 550, 800, this)" class="size-btn text-sm border border-[#DCD3BA] px-4 py-2 rounded-full hover:border-ink text-ash font-semibold transition">
-                                200ml
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Quantity</h3>
-                        <div class="flex items-center border border-[#DCD3BA] w-32 rounded-lg overflow-hidden bg-white">
-                            <button onclick="updateQty(-1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">−</button>
-
-                            <input type="number" id="quantity" value="1" min="1" readonly class="w-12 h-10 text-center font-semibold text-ink focus:outline-none text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-
-                            <button onclick="updateQty(1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">+</button>
-                        </div>
-                    </div>
+            <div id="thumbnails-container" class="flex gap-3 justify-center">
                 </div>
-
-                <div class="flex flex-col sm:flex-row gap-3">
-                     <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-[250px] bg-clay hover:bg-clay-dark text-white py-3 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-                    </button>
-                    <button class="flex-1 bg-ink text-parchment py-3.5 rounded-xl font-semibold text-sm tracking-[0.1em] uppercase shadow-sm hover:bg-ink-light transition">
-                        Buy It Now
-                    </button>
-                </div>
-
-                <div class="mt-8 border-t border-[#ECE4CE] pt-4">
-                    <details class="group py-3" open>
-                        <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
-                            <span>Product Details &amp; Benefits</span>
-                            <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
-                        </summary>
-                        <p class="text-xs text-ash mt-2 leading-relaxed">
-                            Apply a dime-sized amount cleanly over your face and neck every morning. Non-greasy, fast-absorbing formula that leaves no white cast. Clinically tested for safety and sensitivity.
-                        </p>
-                    </details>
-                    <details class="group py-3 border-t border-[#ECE4CE]">
-                        <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
-                            <span>Key Ingredients</span>
-                            <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
-                        </summary>
-                        <p class="text-xs text-ash mt-2 leading-relaxed font-mono">
-                            Aqua, Vitamin C (Ascorbic Acid), Hyaluronic Acid, Shea Butter, Niacinamide, Glycerin, Sweet Almond Oil, Natural Fragrance Extracts.
-                        </p>
-                    </details>
-                </div>
-
-            </div>
         </div>
 
-        <div class="mt-10 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-[#ECE4CE] grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="bg-sage/15 text-sage text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Best Seller</span>
+                    <span class="bg-gold/15 text-clay-dark text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">100% Vegan</span>
+                </div>
+                <h1 id="product-title" class="text-2xl sm:text-3xl font-robot font-medium text-ink mb-3">Loading Product...</h1>
 
-            <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-[#ECE4CE] pb-6 lg:pb-0 lg:pr-8">
-                <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">Feedback</p>
-                <h2 class="text-xl font-serif italic font-medium text-ink mb-4">Customer Reviews</h2>
-                <div class="flex items-center gap-4 mb-5">
-                    <span class="text-4xl font-serif font-semibold text-ink">4.0</span>
-                    <div>
-                        <div class="flex text-gold text-sm mb-0.5">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star text-[#D9D2BC]"></i>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="flex text-gold text-sm">
                         </div>
-                        <p class="text-xs text-ash font-medium">Based on 142 ratings</p>
-                    </div>
+                    <span class="text-xs text-ash font-medium">(4.0 / 5.0 out of 142 ratings)</span>
                 </div>
 
-                <div class="space-y-2.5 mb-6">
-                    <div class="flex items-center text-xs text-ash gap-2">
-                        <span class="w-10">5 star</span>
-                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[65%]"></div></div>
-                        <span class="w-8 text-right">65%</span>
-                    </div>
-                    <div class="flex items-center text-xs text-ash gap-2">
-                        <span class="w-10">4 star</span>
-                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[20%]"></div></div>
-                        <span class="w-8 text-right">20%</span>
-                    </div>
-                    <div class="flex items-center text-xs text-ash gap-2">
-                        <span class="w-10">3 star</span>
-                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[10%]"></div></div>
-                        <span class="w-8 text-right">10%</span>
-                    </div>
-                    <div class="flex items-center text-xs text-ash gap-2">
-                        <span class="w-10">2 star</span>
-                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[3%]"></div></div>
-                        <span class="w-8 text-right">3%</span>
-                    </div>
-                    <div class="flex items-center text-xs text-ash gap-2">
-                        <span class="w-10">1 star</span>
-                        <div class="flex-1 bg-[#F1EBD7] h-2 rounded-full overflow-hidden"><div class="bg-gold h-full w-[2%]"></div></div>
-                        <span class="w-8 text-right">2%</span>
-                    </div>
+                <div class="mb-6 flex items-baseline gap-3">
+                    <span id="product-price" class="text-3xl font-serif font-semibold text-ink">₹ 0</span>
+                    <span id="product-mrp" class="text-sm text-ash line-through"></span>
                 </div>
 
-                <button onclick="toggleReviewForm()" class="w-full border-2 border-ink text-ink hover:bg-ink hover:text-parchment transition font-semibold py-2.5 rounded-xl text-sm uppercase tracking-wider">
-                    Write A Review
+                <hr class="border-[#ECE4CE] my-6">
+
+                <p id="product-desc" class="text-[#5C594E] text-sm leading-relaxed mb-6">
+                    Loading description...
+                </p>
+
+                <div class="mb-6">
+                    <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Select Size</h3>
+                    <div id="variants-container" class="flex gap-3">
+                        </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-xs font-bold text-ash uppercase tracking-wider mb-3">Quantity</h3>
+                    <div class="flex items-center border border-[#DCD3BA] w-32 rounded-lg overflow-hidden bg-white">
+                        <button onclick="updateQty(-1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">−</button>
+
+                        <input type="number" id="quantity" value="1" min="1" readonly class="w-12 h-10 text-center font-semibold text-ink focus:outline-none text-sm">
+
+                        <button onclick="updateQty(1)" class="w-10 h-10 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+               <button 
+    id="cart-toggle-btn" 
+    onclick="handleCartButtonClick(this)" 
+    class="w-[250px] bg-clay hover:bg-clay-dark text-white py-3 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2"
+>
+    <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+</button>
+                <button class="flex-1 bg-ink text-parchment py-3.5 rounded-xl font-semibold text-sm tracking-[0.1em] uppercase shadow-sm hover:bg-ink-light transition">
+                    Buy It Now
                 </button>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
-
-                <div id="review-form-box" class="hidden bg-parchment border border-[#E7DFC7] p-5 rounded-xl transition-all duration-300">
-                    <h3 class="text-md font-serif font-semibold text-ink mb-3">Share Your Feedback</h3>
-                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Review Submitted Successfully!'); toggleReviewForm();">
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-ash mb-1.5">Your Rating *</label>
-                            <div class="flex gap-2 text-xl text-[#D9D2BC]">
-                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(1)"></i>
-                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(2)"></i>
-                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(3)"></i>
-                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(4)"></i>
-                                <i class="fa-solid fa-star cursor-pointer hover:text-gold transition review-star" onclick="setReviewRating(5)"></i>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-ash mb-1">Review Comments *</label>
-                            <textarea rows="3" required placeholder="What did you like or dislike about this cream? How does it feel on skin?"
-                                      class="w-full p-3 border border-[#DCD3BA] rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-clay"></textarea>
-                        </div>
-
-                        <div class="flex justify-end gap-3 text-xs uppercase tracking-wide">
-                            <button type="button" onclick="toggleReviewForm()" class="px-4 py-2 border border-[#DCD3BA] text-ash font-semibold rounded-lg hover:bg-[#F1EBD7]">Cancel</button>
-                            <button type="submit" class="px-4 py-2 bg-clay text-white font-semibold rounded-lg hover:bg-clay-dark shadow-sm">Submit Review</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="space-y-6 divide-y divide-[#ECE4CE]">
-                    <div class="pt-2">
-                        <div class="flex justify-between items-start mb-1">
-                            <div>
-                                <h4 class="text-sm font-serif font-semibold text-ink">Manish Kumar</h4>
-                                <div class="flex text-gold text-xs mt-0.5">
-                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                                </div>
-                            </div>
-                            <span class="text-xs text-ash font-medium">July 02, 2026</span>
-                        </div>
-                        <p class="text-xs text-[#5C594E] leading-relaxed">
-                            This cream is totally non-sticky! It absorbs into my skin in less than a minute and leaves a clean, smooth texture without any white cast. Highly recommended for daily morning skincare.
-                        </p>
-                    </div>
-
-                    <div class="pt-4">
-                        <div class="flex justify-between items-start mb-1">
-                            <div>
-                                <h4 class="text-sm font-serif font-semibold text-ink">Nitin K.</h4>
-                                <div class="flex text-gold text-xs mt-0.5">
-                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star text-[#D9D2BC]"></i>
-                                </div>
-                            </div>
-                            <span class="text-xs text-ash font-medium">June 28, 2026</span>
-                        </div>
-                        <p class="text-xs text-[#5C594E] leading-relaxed">
-                            Really liked the texture and fragrance. It kept my face fresh and well hydrated throughout the hot day. Container quality can be improved slightly, but product inside is premium.
-                        </p>
-                    </div>
-                </div>
-
+            <div class="mt-8 border-t border-[#ECE4CE] pt-4">
+                <details class="group py-3" open>
+                    <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
+                        <span>Product Details &amp; Benefits</span>
+                        <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <p id="product-details" class="text-xs text-ash mt-2 leading-relaxed">
+                        Loading...
+                    </p>
+                </details>
+                <details class="group py-3 border-t border-[#ECE4CE]">
+                    <summary class="flex justify-between items-center font-serif font-semibold text-sm text-ink cursor-pointer list-none">
+                        <span>Key Ingredients</span>
+                        <span class="transition group-open:rotate-45 text-clay"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <p id="product-ingredients" class="text-xs text-ash mt-2 leading-relaxed font-mono">
+                        Loading...
+                    </p>
+                </details>
             </div>
+
         </div>
-        </main>
+    </div>
+</main>
 
     <!-- ============ FOOTER (matches index.html) ============ -->
   <div id="footer-placeholder"></div>
 
+   <!-- ============Popup Form to New Lead============ -->
+   <div id="lead-modal-container"></div>
+
 
     <script src="./js/include.js"></script>
-    <script src="./js/product.js"></script>
+   <script src="./js/product.js"></script>
+   <script type="module" src="./js/product.js"></script>
     <script src="./js/cart.js"></script>
     <script src="./js/app.js"></script>
    <script type="module" src="./js/contacts.js"></script>
+    <script type="module" src="./js/lead.js"></script>
+    <script>
+        // Modal ko background me dynamically pull karne ke liye script
+        fetch('./lead.html')
+            .then(response => response.text())
+            .then(htmlContent => {
+                document.getElementById('lead-modal-container').innerHTML = htmlContent;
+            })
+            .catch
+        </script>
 
 </body>
 </html>

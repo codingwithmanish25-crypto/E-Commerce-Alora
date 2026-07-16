@@ -1,4 +1,4 @@
-
+import BASE_URL from "./config.js";
 
 document.addEventListener("partialsLoaded", () => {
 
@@ -332,7 +332,6 @@ window.addEventListener('load', updateHeaderCartCount);
 
 // ============== backend code===================================
 
-        const backendUrl = "http://localhost:5000";
 let currentScrollAmount = 0;
 
 // 1. Backend se products fetch karke slider me render karne ka function
@@ -341,7 +340,7 @@ async function loadSliderProducts() {
     if(!wrapper) return;
 
     try {
-        const response = await fetch(`${backendUrl}/api/product/all`);
+        const response = await fetch(`${BASE_URL}/api/product/all`);
         const products = await response.json();
         
         if (!response.ok) throw new Error(products.error || "Data fetch nahi ho paya");
@@ -356,7 +355,7 @@ async function loadSliderProducts() {
 
         // HTML String Generation
         wrapper.innerHTML = top5Products.map((product, index) => {
-            const fullImgUrl = `${backendUrl}${product.imagepath}`;
+            const fullImgUrl = `${BASE_URL}${product.imagepath}`;
             
             // Star rating ka setup (Max 5 stars)
             const ratingCount = Math.round(product.rating || 4);
@@ -402,7 +401,7 @@ async function loadSliderProducts() {
     </span>
   
         <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
+        <a href="./product.html?id=${product._id}" class="block w-full h-[180px]">
             <img src="${fullImgUrl}" alt="${product.name}"" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
         </a>
     </div>
@@ -440,9 +439,9 @@ async function loadSliderProducts() {
         </div>
     </div>
 
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
+   <button id="cart-toggle-btn" onclick="handleCartButtonClick(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
+    <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+</button>
 </div>
 `;
         }).join(" ");

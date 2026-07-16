@@ -317,7 +317,7 @@
         <div class="greensection overflow-hidden w-full py-4 ">
             <div id="productSliderWrapper" class="flex  gap-6 transition-transform duration-500 ease-out style-none" style="transform: translateX(0px);">
 
-    <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
+                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
     
     <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
         New
@@ -652,13 +652,6 @@
         </div>
     </section>
 
-    <section class="mt-6 flex justify-center">
-        <div class="flex justify-center items-center w-[1024px]">
-            <a href="./moreproduct.html">
-                <img src="./static/advertisebanner2.png" alt="salesimage" class="rounded-xl">
-            </a>
-        </div>
-    </section>
 
     <!-- ============ WHY Alora Radiance ============ -->
     <section class="bg-parchment py-20 border-b border-[#E7DFC7]">
@@ -1054,16 +1047,30 @@
     <!-- ============ FOOTER ============ -->
   <div id="footer-placeholder"></div>
 
+  <!-- ============Popup Form to New Lead============ -->
+   <div id="lead-modal-container"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./js/include.js"></script>
-    <script src="./js/main.js"></script>
+    <script type="module" src="./js/main.js"></script>
     <script src="./js/cart.js"></script>
     <script type="module" src="./js/auth.js"></script>
     
     <script type="module" src="./js/app.js"></script>
 
 
+
+    <script type="module" src="./js/lead.js"></script>
+    <script>
+        // Modal ko background me dynamically pull karne ke liye script
+        fetch('./lead.html')
+            .then(response => response.text())
+            .then(htmlContent => {
+                document.getElementById('lead-modal-container').innerHTML = htmlContent;
+            })
+            .catch
+        </script>
 </body>
 </html>
 
