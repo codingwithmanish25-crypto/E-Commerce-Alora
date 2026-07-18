@@ -1,4 +1,4 @@
-import User from "../models/UserAuth.models.js"; // Note: Always include the file extension .js in local imports
+import UserAuth from "../models/UserAuth.models.js"; // <- match the real filename & casing exactly
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
@@ -21,15 +21,15 @@ export const register = async (req, res, next) => {
     }
 
     // Email double registration check
-    let userExists = await User.findOne({ email });
+    let userExists = await UserAuth.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'Email already registered.' });
 
     // Phone double registration check (Kyunki schema me unique: true hai)
-    let phoneExists = await User.findOne({ phone });
+    let phoneExists = await UserAuth.findOne({ phone });
     if (phoneExists) return res.status(400).json({ message: 'Phone number already registered.' });
 
     // FIX: Name ko uppercase (.toUpperCase()) karke database me save kar rahe hain
-    const user = await User.create({ 
+    const user = await UserAuth.create({ 
       name: name.toUpperCase(), 
       email, 
       password, 
@@ -50,7 +50,7 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await UserAuth.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
@@ -79,7 +79,7 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ message: 'Email is required.' });
 
-    const user = await User.findOne({ email });
+    const user = await UserAuth.findOne({ email });
     if (!user) return res.status(404).json({ message: 'No user found with this email.' });
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -109,7 +109,7 @@ export const resetPassword = async (req, res) => {
       return res.status(400).json({ message: 'New password is required.' });
     }
 
-    const user = await User.findOne({ resetToken: token });
+    const user = await UserAuth.findOne({ resetToken: token });
 
     if (!user) {
       return res.status(400).json({ message: 'Invalid token. User not found with this token.' });
