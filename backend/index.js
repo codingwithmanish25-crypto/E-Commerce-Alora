@@ -20,7 +20,8 @@ app.use(cors({
     'http://localhost:5500',
      'http://127.0.0.1:5500',
       'http://localhost:3000',
-      'https://e-commerce-alora.vercel.app/'
+      'https://e-commerce-alora.vercel.app'
+      
     ], // Match front-end local servers
   credentials: true
 }));
