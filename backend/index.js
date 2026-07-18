@@ -15,14 +15,21 @@ dotenv.config()
 
 const app = express()
 db()
+const allowedOrigins = [
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://localhost:3000',
+  'https://e-commerce-alora.onrender.com',
+  'https://e-commerce-alora.vercel.app'
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:5500',
-     'http://127.0.0.1:5500',
-      'http://localhost:3000',
-      'https://e-commerce-alora.vercel.app'
-      
-    ], // Match front-end local servers
+  origin: function(origin, callback){
+    // allow requests with no origin (e.g. curl, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS policy: origin not allowed'));
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -52,7 +59,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const Port = process.env.PORT  
-app.listen(Port,()=>{
-    console.log(`Server is running on Port ${Port}`)
-})
+const PORT = Number(process.env.PORT) || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on Port ${PORT}`);
+});
