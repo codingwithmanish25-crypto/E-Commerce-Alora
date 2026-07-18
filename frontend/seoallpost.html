@@ -169,7 +169,33 @@
     </div>
 
     <script>
-      
+        // Authentication & Route Session Guard
+        (function () {
+            const userStr = localStorage.getItem("user");
+            if (!userStr) {
+                alert("Access Denied! Login required.");
+                window.location.href = "./login.html";
+                return;
+            }
+            try {
+                const user = JSON.parse(userStr);
+                if (user.role !== "seoadmin" && user.role !== "admin") {
+                    alert("Unauthorized access framework.");
+                    window.location.href = "./index.html";
+                }
+            } catch (e) {
+                localStorage.clear();
+                window.location.href = "./login.html";
+            }
+
+            const logoutBtn = document.getElementById("adminLogoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function() {
+                    localStorage.clear();
+                    window.location.href = "./login.html";
+                });
+            }
+        })();
 
         // Reactive Automated URL Slug Generator 
         document.getElementById('title').addEventListener('input', function(e) {
