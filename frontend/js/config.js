@@ -2,7 +2,7 @@ const isLocal = window.location.hostname === "localhost" || window.location.host
 
 const BASE_URL = isLocal 
     ? "http://localhost:5000" 
-    : "https://e-commerce-alora.onrender.com/"; 
+    : "https://e-commerce-alora.onrender.com"; 
 
 export default BASE_URL;
 

@@ -141,26 +141,3 @@ export const getproductbyid = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
-
-// search Product 
-
-export const searchProducts = async (req, res) => {
-    try {
-        const query = req.query.q;
-        if (!query || query.trim() === "") {
-            return res.status(200).json([]);
-        }
-
-        // Case-insensitive regex search
-        const products = await Product.find({
-            name: { $regex: query, $options: "i" }
-        })
-        .select("name imagepath price _id") // Jo data frontend ke liye chahiye sirf wahi select karein
-        .limit(6); // Suggestions limit karein taaki speed fast rahe
-
-        res.status(200).json(products);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
