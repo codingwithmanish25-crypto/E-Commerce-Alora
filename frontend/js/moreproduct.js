@@ -45,7 +45,7 @@ function normalizeProduct(product) {
             ml: v.volume,
             price: v.price,
             mrp: v.comparePrice || v.price
-        }))
+          }))
         : [{ ml: "Standard", price: product.price || 0, mrp: product.comparePrice || product.price || 0 }];
 
     // Raw backend category ko normalized lowercase string me convert kiya ja raha hai
@@ -66,6 +66,7 @@ function normalizeProduct(product) {
         sizes
     };
 }
+
 
 // ===== Render Catalog (Symmetric Layout and Grid Compatible) =====
 function renderProductCatalog(products) {
@@ -99,6 +100,7 @@ function renderProductCatalog(products) {
 
             return `
                 <button 
+                    type="button"
                     onclick="changeCardSize('${sz.ml}', ${sz.price}, ${sz.mrp || 0}, this)"
                     class="size-btn text-[11px] px-2.5 py-1 rounded-full border transition ${activeClasses}"
                 >
@@ -108,7 +110,7 @@ function renderProductCatalog(products) {
         }).join('');
 
         return `
-        <div data-id="${product.id}" class="relative w-full h-[470px] product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
+        <div data-product-id="${product.id}" class="relative w-full h-[470px] product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
             
             <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 ${product.isBestseller ? 'bg-orange-600' : 'bg-black'} uppercase text-white rounded-full flex items-center justify-center shadow-md">
                 ${product.isBestseller ? 'Hot' : 'New'}
@@ -145,13 +147,14 @@ function renderProductCatalog(products) {
                 </div>
 
                 <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm qty-container">
-                    <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
+                    <button type="button" onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
                     <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-                    <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
+                    <button type="button" onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
                 </div>
             </div>
 
-            <button id="cart-toggle-btn" onclick="handleCartButtonClick('${product.id}', this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
+            <!-- FIXED: Pointing dynamically to local lead interceptor function instead of missing global toggleCartState -->
+            <button type="button" onclick="handleCartButtonClick('${product.id}', this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
                 <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
             </button>
         </div>`;
@@ -203,35 +206,26 @@ function updateQty(change, element) {
 
 // ===== Optimized Category & Advanced Filtering =====
 function filterProducts() {
-    // 1. Checked checkboxes se categories capture karein ('skin', 'face', 'cream', 'body')
     const checkboxes = document.querySelectorAll('input[name="category"]:checked');
     selectedCategories = Array.from(checkboxes).map(cb => cb.value.toLowerCase().trim());
 
-    // 2. Slider constraint get karein
     const priceRangeInput = document.getElementById('price-range');
     if (priceRangeInput) maxPriceConstraint = parseInt(priceRangeInput.value);
 
-    // 3. Database products filter karein
     let results = PRODUCTS_DATABASE.filter(item => {
-        // Category Filter logic
         if (selectedCategories.length > 0 && !selectedCategories.includes(item.category)) {
             return false;
         }
         
-        // Rating Filter logic
         if (item.rating < ratingFloorFilter) return false;
-        
-        // Bestseller quick tag filter logic
         if (activeQuickTag === 'bestseller' && !item.isBestseller) return false;
 
-        // Price Constraint logic
         const basePrice = item.sizes[0].price;
         if (basePrice > maxPriceConstraint) return false;
 
         return true;
     });
 
-    // 4. Sorting logic apply karein
     const sortFilter = document.getElementById('sort-filter');
     if (sortFilter) {
         const sortSelection = sortFilter.value;
@@ -244,7 +238,6 @@ function filterProducts() {
         }
     }
 
-    // 5. Updated list UI me render karein
     renderProductCatalog(results);
 }
 
@@ -342,6 +335,7 @@ window.closeLeadModal = function() {
 };
 
 // ===== Cart Operations =====
+// ===== Cart Operations =====
 function commitProductToCart(productId, actionBtnElement) {
     const cardElement = actionBtnElement.closest('.product-card');
     if (!cardElement) return;
@@ -350,13 +344,17 @@ function commitProductToCart(productId, actionBtnElement) {
     const targetActiveConfiguredSizeText = activeSelectedSizeBtn ? activeSelectedSizeBtn.innerText.trim() : "Standard";
 
     const selectedRawPriceText = cardElement.querySelector('.product-price').innerText;
-    const parsedCleanNumericPriceVal = parseInt(selectedRawPriceText.replace('₹', '').trim()) || 0;
+    const parsedCleanNumericPriceVal = parseInt(selectedRawPriceText.replace(/[^\d.]/g, '').trim()) || 0;
 
     const currentSelectedQuantityMetricVal = parseInt(cardElement.querySelector('.quantity').value) || 1;
     const targetProductDisplayNameText = cardElement.querySelector('.product-name').innerText;
     
     const descriptionElement = cardElement.querySelector('.product-desc-text');
     const targetProductDescriptionText = descriptionElement ? descriptionElement.innerText.trim() : 'No description available';
+
+    // FIX: Extract the image URL from the current card container layout 
+    const imgElement = cardElement.querySelector('img');
+    const targetProductImageSrc = imgElement ? imgElement.getAttribute('src') : '';
 
     let localShoppingSessionCartArrayStore = JSON.parse(localStorage.getItem('glowRitualCartData')) || [];
 
@@ -373,12 +371,18 @@ function commitProductToCart(productId, actionBtnElement) {
             productDescription: targetProductDescriptionText,
             activeSelectedSizeConfig: targetActiveConfiguredSizeText,
             unitPriceItemConfig: parsedCleanNumericPriceVal,
-            qtyCountOrderMetric: currentSelectedQuantityMetricVal
+            qtyCountOrderMetric: currentSelectedQuantityMetricVal,
+            baseImg: targetProductImageSrc // FIX: Save image property securely
         });
     }
 
     localStorage.setItem('glowRitualCartData', JSON.stringify(localShoppingSessionCartArrayStore));
     syncCartCounterIcon();
+
+    // Sync validation trigger towards header nodes managed globally inside main.js
+    if (typeof window.updateHeaderCartCount === 'function') {
+        window.updateHeaderCartCount();
+    }
 
     const backupOriginalActionBtnInnerHtmlMarkup = actionBtnElement.innerHTML;
     actionBtnElement.innerHTML = `<i class="fa-solid fa-circle-check text-xs"></i> Item Added!`;
@@ -391,7 +395,6 @@ function commitProductToCart(productId, actionBtnElement) {
         if (inputQty) inputQty.value = 1;
     }, 1200);
 }
-
 function syncCartCounterIcon() {
     const countDisplayTargetNode = document.getElementById('cart-count');
     if (!countDisplayTargetNode) return;
@@ -440,3 +443,34 @@ window.applyQuickFilter = applyQuickFilter;
 window.resetFilters = resetFilters;
 window.commitProductToCart = commitProductToCart;
 window.handleCartButtonClick = handleCartButtonClick;
+// Map window context alias to catch any random structural global calls securely
+window.toggleCartState = function(btn) {
+    const productId = btn.closest('.product-card')?.dataset.productId || 'unknown';
+    handleCartButtonClick(productId, btn);
+};
+
+// Map window context alias safely to prevent 'btn.closest is not a function' errors
+window.toggleCartState = function(btn) {
+    // 1. Fallback check: If 'btn' isn't a valid DOM element or lacks .closest, search the DOM
+    let resolvedButton = (btn && typeof btn.closest === 'function') ? btn : null;
+    let productId = resolvedButton?.closest('.product-card')?.dataset.productId;
+
+    // 2. If it failed to resolve from the argument, look for a global tracking fallback
+    if (!productId && pendingCatalogProductId) {
+        productId = pendingCatalogProductId;
+        resolvedButton = pendingCatalogCartAction;
+    }
+
+    // 3. Last resort emergency search using the dataset ID
+    if (!productId && typeof btn === 'string') {
+        productId = btn;
+        resolvedButton = document.querySelector(`[data-product-id="${productId}"] button[onclick*="Cart"]`);
+    }
+
+    // Run the handler if we found a valid reference, otherwise log safely
+    if (productId && resolvedButton) {
+        handleCartButtonClick(productId, resolvedButton);
+    } else {
+        console.warn("Could not resolve product card context safely inside toggleCartState:", btn);
+    }
+};

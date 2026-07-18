@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO ALORA - Create Post</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .editor-content img { max-width: 100%; height: auto; display: block; margin: 1rem 0; border-radius: 0.5rem; }
+        .editor-content:empty:before { content: 'Write your story here...'; color: #9ca3af; }
+    </style>
+</head>
+<body class="font-['Manrope'] bg-gray-50 flex flex-col h-screen">
+
+    <nav class="h-16 bg-gray-900 text-white flex items-center px-6 shrink-0">
+        <h1 class="text-xl font-bold">Hello SEO Admin</h1>
+    </nav>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="bg-gray-800 text-gray-300 w-64 min-h-full p-4 flex flex-col justify-between shrink-0">
+            <nav class="w-full">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-gray-700 text-white transition">
+                            <i class="fa-solid fa-pen-to-square"></i> Create Post
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fa-solid fa-compass"></i> All Posts
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="pt-4 border-t border-gray-700">
+                <button id="adminLogoutBtn" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-red-400 hover:bg-red-900/30 hover:text-red-300 transition font-medium text-left">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Form Stream Area -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            <div class="animate__animated animate__fadeIn max-w-5xl mx-auto">
+                <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800">Publish New Post</h2>
+                        <p class="text-sm text-gray-500 mt-1">Configure your rich content body and explicit SEO configuration metadata.</p>
+                    </div>
+                    <button type="submit" form="postForm" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Publish Engine
+                    </button>
+                </div>
+
+                <form id="postForm" class="space-y-6" enctype="multipart/form-data">
+                    
+                    <!-- Title & Slug Mapping -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Post Title *</label>
+                            <input type="text" id="title" name="title" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="How to optimize core web vitals">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Url Slug *</label>
+                            <input type="text" id="slug" name="slug" required class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="how-to-optimize-core-web-vitals">
+                        </div>
+                    </div>
+
+                    <!-- Explicit Search Engine Optimizations -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-gray-800 border-b pb-2"><i class="fa-solid fa-chart-line text-blue-500 mr-2"></i>Target Engine Optimization (SEO Metadata)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+                                <input type="text" name="metaTitle" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Category Designation</label>
+                                <input type="text" name="category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Tech, Marketing...">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+                            <textarea name="metaDescription" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="Brief summarizing snippet for index listings (160 characters suggested)"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tags (Comma Separated)</label>
+                                <input type="text" name="tags" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="seo, nodejs, webdev">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Keywords (SEO Indexed)</label>
+                                <input type="text" name="keywords" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="optimization engine, performance metrics">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Assets Processing -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <!-- Cover File Manager -->
+                        <div class="space-y-2">
+                            <h4 class="text-sm font-bold text-gray-700"><i class="fa-solid fa-image text-purple-500 mr-2"></i>Cover Media Image</h4>
+                            <input type="text" name="coverImageUrl" id="coverImageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none mb-2" placeholder="Paste structural absolute image URL...">
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                                    <div class="flex flex-col items-center justify-center pt-2">
+                                        <i class="fa-solid fa-cloud-arrow-up text-gray-400 mb-1"></i>
+                                        <p class="text-xs text-gray-500">Or drag and upload direct system file</p>
+                                    </div>
+                                    <input type="file" name="coverImageFile" class="hidden" accept="image/*" />
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- OpenGraph Social Target Engine -->
+                        <div class="space-y-2">
+                            <h4 class="text-sm font-bold text-gray-700"><i class="fa-solid fa-share-nodes text-emerald-500 mr-2"></i>OG Social Media Image (Open Graph Sharing)</h4>
+                            <input type="text" name="ogImageUrl" id="ogImageUrl" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none mb-2" placeholder="Paste structural absolute OG URL...">
+                            <div class="flex items-center justify-center w-full">
+                                <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                                    <div class="flex flex-col items-center justify-center pt-2">
+                                        <i class="fa-solid fa-cloud-arrow-up text-gray-400 mb-1"></i>
+                                        <p class="text-xs text-gray-500">Or drag and upload direct system file</p>
+                                    </div>
+                                    <input type="file" name="ogImageFile" class="hidden" accept="image/*" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JSON Rich Schema Markup Injection -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <label class="block text-sm font-bold text-gray-700 mb-2"><i class="fa-solid fa-code text-amber-500 mr-2"></i>Structured Schema Markup Data (JSON-LD Form Format)</label>
+                        <textarea name="schemaMarkup" rows="3" class="w-full font-mono text-xs p-4 bg-gray-900 text-green-400 rounded-lg focus:outline-none" placeholder='{&#10;  "@context": "https://schema.org",&#10;  "@type": "BlogPosting"&#10;}'></textarea>
+                    </div>
+
+                    <!-- Custom Word Processing WYSIWYG Editor Module -->
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="bg-gray-100 border-b border-gray-200 px-4 py-2 flex flex-wrap gap-1 items-center text-gray-600">
+                            <button type="button" onclick="formatDoc('bold')" class="p-2 hover:bg-gray-200 rounded transition" title="Bold"><i class="fa-solid fa-bold"></i></button>
+                            <button type="button" onclick="formatDoc('italic')" class="p-2 hover:bg-gray-200 rounded transition" title="Italic"><i class="fa-solid fa-italic"></i></button>
+                            <button type="button" onclick="formatDoc('underline')" class="p-2 hover:bg-gray-200 rounded transition" title="Underline"><i class="fa-solid fa-underline"></i></button>
+                            <div class="h-6 w-[1px] bg-gray-300 mx-2"></div>
+                            <button type="button" onclick="formatDoc('justifyLeft')" class="p-2 hover:bg-gray-200 rounded transition"><i class="fa-solid fa-align-left"></i></button>
+                            <button type="button" onclick="formatDoc('justifyCenter')" class="p-2 hover:bg-gray-200 rounded transition"><i class="fa-solid fa-align-center"></i></button>
+                            <button type="button" onclick="formatDoc('insertUnorderedList')" class="p-2 hover:bg-gray-200 rounded transition"><i class="fa-solid fa-list-ul"></i></button>
+                            <div class="h-6 w-[1px] bg-gray-300 mx-2"></div>
+                            <!-- Inline Media Injection Tools -->
+                            <button type="button" onclick="insertImageUrl()" class="p-2 hover:bg-gray-200 rounded text-blue-600 transition" title="Insert Image via Link"><i class="fa-solid fa-link-slash"></i> Image URL</button>
+                            <label class="p-2 hover:bg-gray-200 rounded text-purple-600 cursor-pointer transition flex items-center gap-1" title="Upload Local System Image Inline">
+                                <i class="fa-solid fa-file-image"></i> Upload Inline Image
+                                <input type="file" id="inlineImageFile" class="hidden" accept="image/*" onchange="uploadInlineImage(this)">
+                            </label>
+                        </div>
+                        <!-- Content Body Working Canvas -->
+                        <div id="editor" contenteditable="true" class="editor-content p-6 min-h-[350px] max-h-[600px] overflow-y-auto focus:outline-none prose max-w-none"></div>
+                    </div>
+
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+      
+
+        // Reactive Automated URL Slug Generator 
+        document.getElementById('title').addEventListener('input', function(e) {
+            const slug = e.target.value
+                .toLowerCase()
+                .replace(/[^a-z0-String0-9\s-]/g, '') 
+                .replace(/\s+/g, '-') 
+                .replace(/-+/g, '-');
+            document.getElementById('slug').value = slug;
+        });
+
+        // Core Text Editor Exec Commands
+        function formatDoc(cmd, value = null) {
+            document.execCommand(cmd, false, value);
+            document.getElementById('editor').focus();
+        }
+
+        // Handle URL-based inline image insertion
+        function insertImageUrl() {
+            const url = prompt("Enter absolute network address location for target image Asset:");
+            if (url) {
+                formatDoc('insertImage', url);
+            }
+        }
+
+        // Handle direct local upload file stream injection into the text canvas
+        async function uploadInlineImage(input) {
+            if (!input.files || !input.files[0]) return;
+            
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('editorImage', file);
+
+            try {
+                const response = await fetch('/api/posts/upload-editor-img', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    formatDoc('insertImage', result.url);
+                } else {
+                    alert("Media compilation execution failed: " + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error pipeline uploading editor assets.");
+            }
+            input.value = ''; // Reset input element stream
+        }
+
+        // Form Submission to Node.js Backend API
+        document.getElementById('postForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const editorContent = document.getElementById('editor').innerHTML.trim();
+            if(!editorContent || editorContent === '<br>') {
+                alert('Blog content body element cannot remain text empty.');
+                return;
+            }
+
+            const formData = new FormData(this);
+            // Inject structural HTML payload compilation output manually
+            formData.append('content', editorContent);
+
+            try {
+                const response = await fetch('/api/posts/create', {
+                    method: 'POST',
+                    body: formData
+                });
+                const resData = await response.json();
+
+                if (resData.success) {
+                    alert(resData.message);
+                    // Reset working spaces
+                    this.reset();
+                    document.getElementById('editor').innerHTML = '';
+                } else {
+                    alert("Error: " + resData.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Network communication timeout error executing deployment operation.");
+            }
+        });
+    </script>
+</body>
+</html>

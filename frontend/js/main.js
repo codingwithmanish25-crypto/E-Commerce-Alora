@@ -43,8 +43,7 @@ document.addEventListener("partialsLoaded", () => {
         });
     }
 
-    // Agar future me mobile-dropdown-btn add karo navbar me, to bhi
-    // ye guard crash nahi hone dega:
+    // Mobile dropdown menu guard
     const mobileDropdownBtn = document.getElementById("mobile-dropdown-btn");
     const mobileDropdownMenu = document.getElementById("mobile-dropdown-menu");
     if (mobileDropdownBtn && mobileDropdownMenu) {
@@ -55,15 +54,13 @@ document.addEventListener("partialsLoaded", () => {
         });
     }
 
-    // ---------- Cart badge (navbar + footer dono ke baad sahi rahega) ----------
+    // ---------- Cart badge ----------
     updateHeaderCartCount();
 });
 
 
 /* ============================================================
-   PAGE-SPECIFIC SCRIPTS (navbar/footer par depend NAHI karte)
-   Ye sab normal DOMContentLoaded pe hi chalenge, independent
-   blocks me — taaki ek feature fail ho to baaki na tootay.
+   PAGE-SPECIFIC SCRIPTS (Independent Blocks)
    ============================================================ */
 
 // ---------- Discount popup ----------
@@ -73,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closePopupBtn = document.getElementById('closePopup');
     const claimBtn = document.getElementById('claimBtn');
 
-    if (!popup || !popupBox) return; // is page par popup hi nahi hai
+    if (!popup || !popupBox) return;
 
     setTimeout(() => {
         popup.classList.remove('opacity-0', 'pointer-events-none');
@@ -238,45 +235,86 @@ document.addEventListener("DOMContentLoaded", () => {
     startAutoSlide();
 });
 
-// ---------- Product size / qty toggle (used on product cards) ----------
+
+/* ============================================================
+   CART OPERATIONS & VARIANT CONTROL (Hybrid Compatible)
+   ============================================================ */
 function toggleCartState(button) {
-    const isAlreadyInCart = button.getAttribute('data-in-cart') === 'true';
+    // Custom prototyping compatibility context read safely
     const card = button.closest('.product-card');
     if (!card) return;
 
-    if (!isAlreadyInCart) {
-        const nameEl = card.querySelector('h3');
-        const priceEl = card.querySelector('.product-price');
-        const imgEl = card.querySelector('img');
-        const qtyInput = card.querySelector('.quantity');
-
-        const name = nameEl ? nameEl.innerText.trim() : '';
-        const priceText = priceEl ? priceEl.innerText.replace(/[^\d.]/g, '') : '0';
-        const price = parseFloat(priceText) || 0;
-        const img = imgEl ? imgEl.src : '';
-        const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
-        const id = name;
-
-        addToCart(id, name, price, img, qty);
-
-        button.setAttribute('data-in-cart', 'true');
-        button.innerHTML = `<i class="fa-solid fa-circle-check text-xs"></i> In Cart`;
-        button.className = "w-full bg-emerald-600 text-white py-2.5 rounded font-medium text-sm tracking-wide uppercase shadow hover:bg-emerald-700 transition flex items-center justify-center gap-2 mt-auto";
-    } else {
-        button.setAttribute('data-in-cart', 'false');
-        button.innerHTML = `<i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart`;
-        button.className = "w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto";
+    // --- NEW VALIDATION TRIGGER BEFORE CART SAVE ---
+    // Check karein kya user ne lead form bhara hai
+    const isLeadFilled = localStorage.getItem('leadFilled');
+    
+    if (!isLeadFilled || isLeadFilled !== 'true') {
+        console.log("Lead form not filled yet. Prompting user modal...");
+        
+        // lead.html se aaye modal element ko target karein
+        const leadModalElement = document.getElementById('lead-modal') || document.querySelector('#lead-modal-container > div');
+        
+        if (leadModalElement) {
+            // Modal show logic (Hidden class remove karke display flex/block karein)
+            leadModalElement.classList.remove('hidden');
+            return; // Yahin se rok dein taaki form bhare bina item cart me na jaye
+        } else {
+            console.warn("Lead modal element DOM me nahi mila.");
+        }
     }
-}
+    // -------------------------------------------------
 
-function addToCart(id, name, price, img, qty = 1) {
+    // Get active size details from variant setup
+    const activeSizeBtn = card.querySelector('.size-btn.bg-ink') || card.querySelector('.size-btn');
+    const sizeText = activeSizeBtn ? activeSizeBtn.innerText.trim() : 'Standard';
+
+    // Retrieve unique primary key references
+    const productId = card.dataset.productId || card.dataset.id || card.querySelector('h3')?.innerText.trim() || 'product';
+    const uniqueId = `${productId}__${sizeText}`;
+
+    const nameEl = card.querySelector('h3') || card.querySelector('.product-name');
+    const priceEl = card.querySelector('.product-price');
+    const mrpEl = card.querySelector('.product-mrp');
+    const imgEl = card.querySelector('img');
+    const qtyInput = card.querySelector('.quantity');
+
+    const name = nameEl ? nameEl.innerText.trim() : '';
+    const priceText = priceEl ? priceEl.innerText.replace(/[^\d.]/g, '') : '0';
+    const mrpText = mrpEl ? mrpEl.innerText.replace(/[^\d.]/g, '') : priceText;
+    
+    const price = parseFloat(priceText) || 0;
+    const mrp = parseFloat(mrpText) || price;
+    const img = imgEl ? imgEl.getAttribute('src') : '';
+    const qty = qtyInput ? (parseInt(qtyInput.value) || 1) : 1;
+
+    addToCart(uniqueId, name, price, img, qty, sizeText, mrp);
+
+    // 1.2s Success state alert transition feedback
+    const originalHTML = button.innerHTML;
+    button.innerHTML = `<i class="fa-solid fa-circle-check text-xs"></i> Added to Cart`;
+    button.disabled = true;
+
+    setTimeout(() => {
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    }, 1200);
+}
+function addToCart(id, name, price, img, qty = 1, size = 'Standard', mrp = 0) {
     let cart = JSON.parse(localStorage.getItem('glowCart')) || [];
     let existingProduct = cart.find(item => item.id === id);
 
     if (existingProduct) {
         existingProduct.qty += qty;
     } else {
-        cart.push({ id, name, price, img, qty });
+        cart.push({ 
+            id: id, 
+            name: name, 
+            price: price, 
+            mrp: mrp || price, 
+            img: img, 
+            qty: qty, 
+            size: size 
+        });
     }
 
     localStorage.setItem('glowCart', JSON.stringify(cart));
@@ -286,8 +324,14 @@ function addToCart(id, name, price, img, qty = 1) {
 function updateHeaderCartCount() {
     let cart = JSON.parse(localStorage.getItem('glowCart')) || [];
     let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    
+    // Updates both general selectors and explicit individual node indicators
     const badge = document.getElementById('global-cart-badge');
     if (badge) badge.innerText = totalItems;
+
+    document.querySelectorAll(".cart-badge").forEach(b => {
+        b.innerText = totalItems;
+    });
 }
 
 function selectSize(size, price, mrp, element) {
@@ -321,31 +365,98 @@ function updateQty(change, element) {
     }
 }
 
-// Fallback: agar navbar bina include ke bhi kabhi page par directly ho
-// (partials system use na ho), tab bhi cart badge sahi dikhe.
 window.addEventListener('load', updateHeaderCartCount);
 
+document.addEventListener("DOMContentLoaded", function () {
+    const searchOpenBtn = document.getElementById("search-open-btn");
+    const searchCloseBtn = document.getElementById("search-close-btn");
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+
+    // 1. Search Bar Toggle Logic
+    if (searchOpenBtn && searchContainer) {
+        searchOpenBtn.addEventListener("click", () => {
+            searchContainer.classList.remove("search-hidden");
+            searchInput.focus();
+        });
+    }
+
+    if (searchCloseBtn && searchContainer) {
+        searchCloseBtn.addEventListener("click", () => {
+            searchContainer.classList.add("search-hidden");
+            searchInput.value = "";
+            // Agar user shop page par hai toh products reset ho jayein
+            if (window.location.pathname.includes("moreproduct.html")) {
+                filterProducts("");
+            }
+        });
+    }
+
+    // 2. Search Redirect & Filter Logic
+    if (searchInput) {
+        searchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                const query = searchInput.value.trim();
+                
+                // Agar user kisi dusre page par hai, toh text ke sath Shop page par bhejo
+                if (!window.location.pathname.includes("moreproduct.html")) {
+                    window.location.href = `./moreproduct.html?search=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+
+        // Agar user pehle se shop page par hai toh type karte hi live filter ho
+        searchInput.addEventListener("input", function (e) {
+            if (window.location.pathname.includes("moreproduct.html")) {
+                filterProducts(e.target.value.toLowerCase().trim());
+            }
+        });
+    }
+
+    // 3. Agar URL me search query hai (jaise home page se redirect hoke aaya ho)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    if (searchQuery && window.location.pathname.includes("moreproduct.html")) {
+        searchContainer.classList.remove("search-hidden");
+        searchInput.value = searchQuery;
+        // Thoda sa ruk kar filter chalayenge taaki products load ho chuke hon
+        setTimeout(() => filterProducts(searchQuery.toLowerCase()), 300);
+    }
+
+    // Product Filter Karne Ka Function
+    function filterProducts(query) {
+        const productCards = document.querySelectorAll(".product-card"); // Check karein aapki product card class kya hai
+        productCards.forEach(card => {
+            const productNameElement = card.querySelector(".product-name"); // Check karein product name ki class kya hai
+            if (productNameElement) {
+                const productNameText = productNameElement.textContent.toLowerCase();
+                if (productNameText.includes(query)) {
+                    card.style.display = "block"; 
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        });
+    }
+});
 
 
-
-
-
-// ============== backend code===================================
+/* ============================================================
+   BACKEND ENGINE CODE
+   ============================================================ */
 
 let currentScrollAmount = 0;
 
-// 1. Backend se products fetch karke slider me render karne ka function
 async function loadSliderProducts() {
     const wrapper = document.getElementById('productSliderWrapper');
-    if(!wrapper) return;
+    if (!wrapper) return;
 
     try {
         const response = await fetch(`${BASE_URL}/api/product/all`);
         const products = await response.json();
-        
+
         if (!response.ok) throw new Error(products.error || "Data fetch nahi ho paya");
 
-        // Sirf top 5 products lene ke liye slice lagaya
         const top5Products = products.slice(0, 5);
 
         if (top5Products.length === 0) {
@@ -353,39 +464,36 @@ async function loadSliderProducts() {
             return;
         }
 
-        // HTML String Generation
-        wrapper.innerHTML = top5Products.map((product, index) => {
+        wrapper.innerHTML = top5Products.map((product) => {
             const fullImgUrl = `${BASE_URL}${product.imagepath}`;
-            
-            // Star rating ka setup (Max 5 stars)
+
             const ratingCount = Math.round(product.rating || 4);
             let starsHTML = '';
             for (let i = 1; i <= 5; i++) {
-                starsHTML += i <= ratingCount 
-                    ? `<i class="fa-solid fa-star"></i>` 
+                starsHTML += i <= ratingCount
+                    ? `<i class="fa-solid fa-star"></i>`
                     : `<i class="fa-regular fa-star text-[#D9D2BC]"></i>`;
             }
 
-            // Variants ke dynamic size buttons setup karein
             let sizeButtonsHTML = '';
             let initialPrice = 0;
             let initialComparePrice = 0;
 
             if (product.variants && product.variants.length > 0) {
-                // Default ke liye pehla variant select rakhenge
                 initialPrice = product.variants[0].price;
                 initialComparePrice = product.variants[0].comparePrice || '';
 
                 sizeButtonsHTML = product.variants.map((v, vIndex) => {
                     const isActive = vIndex === 0;
-                    const activeClasses = isActive 
-                        ? 'bg-ink text-parchment border-ink' 
+                    const activeClasses = isActive
+                        ? 'bg-ink text-parchment border-ink'
                         : 'border-[#DCD3BA] text-ash hover:border-ink';
 
                     return `
-                        <button 
-                            onclick="changeCardSize('${v.volume}', ${v.price}, ${v.comparePrice || 0}, this)" 
-                             class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition" ${activeClasses}"
+                        <button
+                            type="button"
+                            onclick="changeCardSize('${v.volume}', ${v.price}, ${v.comparePrice || 0}, this)"
+                            class="size-btn text-xs px-2.5 py-1 rounded-full border font-medium transition ${activeClasses}"
                         >
                             ${v.volume}
                         </button>
@@ -393,57 +501,55 @@ async function loadSliderProducts() {
                 }).join('');
             }
 
-           return `
-<div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-     <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-        <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html?id=${product._id}" class="block w-full h-[180px]">
-            <img src="${fullImgUrl}" alt="${product.name}"" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
+            return `
+            <div data-product-id="${product._id}" class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
 
-     <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">${product.name}</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-              ${product.description || 'No description available'}
-        </p>
-    
-    
+                <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
+                    New
+                </span>
 
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-                ${sizeButtonsHTML}
+                <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
+                    <a href="./product.html?id=${product._id}" class="block w-full h-[180px]">
+                        <img src="${fullImgUrl}" alt="${product.name}" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
+                    </a>
+                </div>
+
+                <div class="px-4 flex-1 flex flex-col justify-center">
+                    <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">${product.name}</h3>
+                    <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
+                         ${product.description || 'No description available'}
+                    </p>
+
+                    <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
+                        <div class="flex gap-1.5 items-center">
+                            ${sizeButtonsHTML}
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="product-price font-serif font-semibold text-ink text-lg">₹${initialPrice}</span>
+                            <span class="product-mrp font-serif text-xs line-through text-ash opacity-70">${initialComparePrice ? '₹' + initialComparePrice : ''}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 mb-3">
+                    <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
+                    <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
+                        <span class="text-black text-xs font-medium">(5)</span>
+                        <div class="flex text-[#D4AF37]">${starsHTML}</div>
+                    </div>
+
+                    <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
+                        <button type="button" onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
+                        <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
+                        <button type="button" onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
+                    </div>
+                </div>
+
+                <button type="button" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
+                    <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
+                </button>
             </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹${initialPrice}</span>
-                <span class="product-mrp font-serif text-xs line-through text-ash opacity-70">${initialComparePrice ? '₹' + initialComparePrice : ''}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37]">${starsHTML}</div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-   <button id="cart-toggle-btn" onclick="handleCartButtonClick(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-    <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-</button>
-</div>
-`;
+            `;
         }).join(" ");
 
     } catch (err) {
@@ -451,59 +557,93 @@ async function loadSliderProducts() {
     }
 }
 
-// 2. Card ke andar specific variant button click handle karne ka function
 function changeCardSize(volume, price, comparePrice, buttonElement) {
     const card = buttonElement.closest('.product-card');
-    
-    // Sabhi sibling buttons se active classes hatao aur unhe normal banao
+    if (!card) return;
+
     const buttons = card.querySelectorAll('.size-btn');
     buttons.forEach(btn => {
         btn.classList.remove('bg-ink', 'text-parchment', 'border-ink');
         btn.classList.add('border-[#DCD3BA]', 'text-ash');
     });
 
-    // Jis button par click kiya hai use select (Active) karo
     buttonElement.classList.add('bg-ink', 'text-parchment', 'border-ink');
     buttonElement.classList.remove('border-[#DCD3BA]', 'text-ash');
 
-    // UI par price aur comparePrice update karo
-    card.querySelector('.product-price').innerText = `₹ ${price}`;
+    const priceEl = card.querySelector('.product-price');
+    if (priceEl) priceEl.innerText = `₹ ${price}`;
+
     const mrpElement = card.querySelector('.product-mrp');
-    if (comparePrice > 0) {
-        mrpElement.innerText = `₹ ${comparePrice}`;
-        mrpElement.style.display = 'inline';
-    } else {
-        mrpElement.style.display = 'none';
+    if (mrpElement) {
+        if (comparePrice > 0) {
+            mrpElement.innerText = `₹ ${comparePrice}`;
+            mrpElement.style.display = 'inline';
+        } else {
+            mrpElement.style.display = 'none';
+        }
     }
 }
 
-// 3. Slider navigation action trigger logic (Aapka purana function unmodified)
 function slideProducts(direction) {
     const wrapper = document.getElementById('productSliderWrapper');
+    if (!wrapper) return;
     const firstCard = wrapper.querySelector('.product-card');
     if (!firstCard) return;
 
     const cardWidth = firstCard.offsetWidth;
-    const gap = 24; 
+    const gap = 24;
     const scrollStep = cardWidth + gap;
     const maxScroll = wrapper.scrollWidth - wrapper.parentElement.offsetWidth;
 
     if (direction === 'right') {
         currentScrollAmount += scrollStep;
         if (currentScrollAmount > maxScroll) {
-            currentScrollAmount = 0; 
+            currentScrollAmount = 0;
         }
     } else if (direction === 'left') {
         currentScrollAmount -= scrollStep;
         if (currentScrollAmount < 0) {
-            currentScrollAmount = maxScroll > 0 ? maxScroll : 0; 
+            currentScrollAmount = maxScroll > 0 ? maxScroll : 0;
         }
     }
 
     wrapper.style.transform = `translateX(-${currentScrollAmount}px)`;
 }
 
-// DOM load hote hi dono functions initiate ho jayein
 document.addEventListener('DOMContentLoaded', () => {
     loadSliderProducts();
 });
+
+
+// ---------- Auto Loop Multi-item Carousel Banner Engine ----------
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.getElementById('auto-slider');
+    if (!slider) return;
+
+    let scrollInterval;
+
+    function startAutoSlide() {
+        scrollInterval = setInterval(() => {
+            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 5) {
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' });
+            }
+        }, 3000);
+    }
+
+    slider.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+    slider.addEventListener('mouseleave', startAutoSlide);
+
+    startAutoSlide();
+});
+
+/* ============================================================
+   GLOBAL SCOPE EXPOSURE FOR COMPATIBILITY
+   ============================================================ */
+window.toggleCartState = toggleCartState;
+window.selectSize = selectSize;
+window.changeCardSize = changeCardSize; 
+window.updateQty = updateQty;
+window.slideProducts = slideProducts;
+window.loadSliderProducts = loadSliderProducts;

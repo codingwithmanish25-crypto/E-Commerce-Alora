@@ -41,7 +41,7 @@ export function renderNavbarState() {
     const token = localStorage.getItem("token");
 
     if (!authActions) {
-        console.warn("Auth placeholder (#auth-actions) abhi DOM me nahi mila. Wait kar rahe hain...");
+        console.warn("Auth placeholder (#auth-actions) abhi DOM me nahi mila.");
         return;
     }
 
@@ -50,7 +50,6 @@ export function renderNavbarState() {
             const user = JSON.parse(storedUser);
             const displayName = user.name || "User";
 
-            // Hi, USERNAME (Uppercase formatting optimized)
             authActions.innerHTML = `
                 <div class="flex items-center gap-3 text-sm font-medium text-black normal-case">
                     <span>Hi, <b class="text-[#2A2A24] font-bold uppercase">${displayName}</b></span>
@@ -60,7 +59,6 @@ export function renderNavbarState() {
                 </div>
             `;
 
-            // Logout event attach
             document.getElementById("logout-btn").addEventListener("click", () => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
@@ -73,7 +71,6 @@ export function renderNavbarState() {
             localStorage.removeItem("token");
         }
     } else {
-        // Default login link icon
         authActions.innerHTML = `
             <a href="./login.html" class="text-base text-black hover:text-gold transition">
                 <i class="fa-solid fa-user"></i>
@@ -83,32 +80,110 @@ export function renderNavbarState() {
 }
 
 // ==========================================
-// 3. LISTEN TO PARTIALS LOADED (Include.js Support)
+// 3. DYNAMIC SEARCH FUNCTIONALITY
+// ==========================================
+function initSearchFunctionality() {
+    const searchOpenBtn = document.getElementById("search-open-btn");
+    const searchCloseBtn = document.getElementById("search-close-btn");
+    const searchContainer = document.getElementById("search-container");
+    const searchInput = document.getElementById("search-input");
+    const suggestionsBox = document.getElementById("search-suggestions");
+
+    if (!searchOpenBtn || !searchContainer || !searchInput || !suggestionsBox) {
+        return;
+    }
+
+    let debounceTimer;
+
+    searchOpenBtn.addEventListener("click", () => {
+        searchContainer.classList.remove("search-hidden");
+        searchInput.focus();
+    });
+
+    searchCloseBtn.addEventListener("click", () => {
+        searchContainer.classList.add("search-hidden");
+        suggestionsBox.classList.add("hidden");
+        searchInput.value = "";
+    });
+
+    searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.trim();
+        clearTimeout(debounceTimer);
+
+        if (query.length < 2) {
+            suggestionsBox.innerHTML = "";
+            suggestionsBox.classList.add("hidden");
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetchSuggestions(query, suggestionsBox);
+        }, 300);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!searchContainer.contains(e.target)) {
+            suggestionsBox.classList.add("hidden");
+        }
+    });
+}
+
+async function fetchSuggestions(query, suggestionsBox) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/products/search?q=${encodeURIComponent(query)}`);
+        const products = await response.json();
+
+        if (!response.ok) throw new Error("Search API response error");
+
+        if (products.length === 0) {
+            suggestionsBox.innerHTML = `<div class="p-4 text-xs text-stone-500 text-center font-medium">Koi product nahi mila "<i>${query}</i>" ke liye</div>`;
+            suggestionsBox.classList.remove("hidden");
+            return;
+        }
+
+        suggestionsBox.innerHTML = products.map(prod => {
+            const imgUrl = prod.imagepath.startsWith("http") ? prod.imagepath : `${BASE_URL}${prod.imagepath}`;
+            return `
+                <div onclick="window.location.href='./product.html?id=${prod._id}'" class="flex items-center gap-3 p-3 hover:bg-stone-50 cursor-pointer border-b border-stone-100 last:border-b-0 transition text-left">
+                    <img src="${imgUrl}" alt="${prod.name}" class="w-10 h-10 object-contain rounded bg-stone-50 border border-stone-200" onerror="this.src='./static/placeholder.png'">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-black truncate text-left">${prod.name}</p>
+                        <p class="text-[11px] text-[#A0522D] font-bold text-left">₹ ${prod.price}</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-stone-400 pr-1"></i>
+                </div>
+            `;
+        }).join("");
+
+        suggestionsBox.classList.remove("hidden");
+    } catch (error) {
+        console.error("Search API Error:", error);
+    }
+}
+
+// ==========================================
+// 4. LISTENERS AND LIFECYCLE
 // ==========================================
 document.addEventListener("partialsLoaded", () => {
-    console.log("Navbar successfully injected! Applying states...");
     renderNavbarState();
+    initSearchFunctionality();
 });
 
 if (document.readyState === "complete" || document.readyState === "interactive") {
-    setTimeout(renderNavbarState, 150);
+    setTimeout(() => {
+        renderNavbarState();
+        initSearchFunctionality();
+    }, 150);
 }
 
-
-
-
-//======================== form submit to website footer part ======================
-
+// Global query form handler
 document.addEventListener("submit", async (e) => {
     if (e.target && e.target.id === "contactForm") {
         e.preventDefault();
-
         const form = e.target;
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const message = document.getElementById("message").value;
-
-        console.log("Form submit caught! Sending data:", { name, email, message });
 
         try {
             const response = await fetch(`${BASE_URL}/api/queries`, {
@@ -118,15 +193,14 @@ document.addEventListener("submit", async (e) => {
             });
 
             const data = await response.json();
-            console.log("Response:", data);
-
             if (response.ok) {
                 form.reset();
+                showSuccessModal("Weldone!", "Aapki query hume mil chuki hai. Hum jald aapse connect karenge.");
             } else {
                 alert("Error: " + (data.message || "Something went wrong"));
             }
         } catch (error) {
-            console.error("Fetch Error:", error);
+            console.error("Query Submit Error:", error);
             alert("Server connected nahi hai.");
         }
     }

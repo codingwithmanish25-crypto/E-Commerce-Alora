@@ -29,3 +29,17 @@ export const createLead = async (req, res) => {
         res.status(500).json({ error: "Server error, please try again later." });
     }
 };
+
+
+// 2. Admin Panel par saari Leads show karne ke liye
+export const getAllLeads = async (req, res) => {
+    try {
+        const leads = await Lead.find().sort({ createdAt: -1 }); // Latest leads pehle aayengi
+        res.status(200).json({ 
+            success: true, 
+            data: leads 
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

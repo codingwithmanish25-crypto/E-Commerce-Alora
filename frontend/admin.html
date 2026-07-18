@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Admin - Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,22 +23,29 @@
             <nav class="w-full">
                 <ul class="space-y-2">
                     <li>
-                        <a href="./dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
                         <a href="./adminproduct.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
                             <i class="fa-solid fa-box"></i> Product
                         </a>
                     </li>
                     <li>
-                        <a href="./navbar.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-compass"></i> Navigation
+                        <a href="./adminleadshow.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fa-solid fa-compass"></i> Lead Show
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./adminUserquery.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-gray-700 text-white font-medium">
+                            <i class="fa-solid fa-compass"></i> User Query
                         </a>
                     </li>
                 </ul>
             </nav>
+
+            <!-- FIX: Added Elegant Logout Button at the bottom of the sidebar -->
+            <div class="pt-4 border-t border-gray-700">
+                <button id="adminLogoutBtn" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-red-400 hover:bg-red-900/30 hover:text-red-300 transition font-medium text-left">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
         </aside>
 
         <main class="flex-1 p-8 overflow-y-auto">
@@ -49,5 +57,36 @@
 
     </div>
 
+    <script>
+        (function () {
+            const userStr = localStorage.getItem("user");
+            if (!userStr) {
+                alert("Access Denied! Login zaroori hai.");
+                window.location.href = "./login.html";
+                return;
+            }
+            try {
+                const user = JSON.parse(userStr);
+                if (user.role !== "admin") {
+                    alert("Unauthorized! Sirf Main Admin hi is page par aa sakta hai.");
+                    window.location.href = "./index.html";
+                    return;
+                }
+            } catch (e) {
+                localStorage.clear();
+                window.location.href = "./login.html";
+                return;
+            }
+
+            // FIX: Logout Click Handler Logic
+            const logoutBtn = document.getElementById("adminLogoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function() {
+                    localStorage.clear(); // Poora storage clean karega (user details aur tokens)
+                    window.location.href = "./login.html"; // Redirect to login page
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

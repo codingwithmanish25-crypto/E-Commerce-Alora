@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { 
     type: String,
-     required: true,
+    required: true,
     minlength: [6, "Password kam se kam 6 characters ka hona chahiye!"], 
     maxlength: [100, "Password 100 characters se bada nahi ho sakta!"] ,
   },
@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
       },
       message: props => `${props.value} ek valid 10-digit phone number nahi hai!`
     }
+  },
+  // Naya field dynamically check karne ke liye ki user kaun hai
+  role: {
+    type: String,
+    enum: ["user", "admin", "seoadmin"], // Sirf yahi 3 categories allow hongi
+    default: "user" // Jo bhi normal signup karega, woh automatic "user" banega
   },
   resetToken: { type: String, default: null },
   resetTokenExpiry: { type: Date, default: null }
@@ -39,15 +45,13 @@ userSchema.pre('save', async function () {
   }
 });
 
-// Your comparison method
+// Password comparison method
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  // Ensure we actually have arguments to compare
   if (!candidatePassword || !this.password) {
     throw new Error("Illegal arguments: missing password string to compare");
   }
   return await bcrypt.compare(candidatePassword, this.password);
 };
-
 
 const User = mongoose.model('User', userSchema);
 export default User;

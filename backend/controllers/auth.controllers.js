@@ -1,136 +1,96 @@
-import User from "../models/UserAuth.models.js"; // Note: Always include the file extension .js in local imports
+import User from "../models/UserAuth.models.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-// Generate JWT Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
 // ==========================================
-// 1. REGISTER USER (Updated with Phone & Uppercase Name)
+// REGISTER USER
 // ==========================================
 export const register = async (req, res, next) => {
   try {
-    // FIX: req.body se 'phone' ko bhi destructure kiya
     const { name, email, password, phone } = req.body; 
-    
-    // Check if phone was sent from frontend/client
-    if (!phone) {
-      return res.status(400).json({ message: 'Phone number zaroori hai!' });
-    }
+    if (!phone) return res.status(400).json({ message: 'Phone number zaroori hai!' });
 
-    // Email double registration check
     let userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'Email already registered.' });
 
-    // Phone double registration check (Kyunki schema me unique: true hai)
     let phoneExists = await User.findOne({ phone });
     if (phoneExists) return res.status(400).json({ message: 'Phone number already registered.' });
 
-    // FIX: Name ko uppercase (.toUpperCase()) karke database me save kar rahe hain
     const user = await User.create({ 
       name: name.toUpperCase(), 
       email, 
       password, 
-      phone 
+      phone,
+      role: "user" 
     });
 
     res.status(201).json({ message: 'Registration successful!' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
-    next(error);
   }
 };
 
 // ==========================================
-// 2. LOGIN USER
+// LOGIN USER (Cookie Driven)
 // ==========================================
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ message: 'Email and password are required.' });
 
-    const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: 'Invalid email or password.' });
+    let userData = null;
+    let userRole = "user";
+    let userId = "";
+
+    // 1. Env Admin Check
+    if (process.env.ADMIN_EMAIL && email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      userId = "env-admin-id";
+      userRole = "admin";
+      userData = { name: "SYSTEM ADMIN", email: process.env.ADMIN_EMAIL, phone: "N/A", role: "admin" };
+    }
+    // 2. Env SEO Admin Check
+    else if (process.env.SEO_EMAIL && email === process.env.SEO_EMAIL && password === process.env.SEO_PASSWORD) {
+      userId = "env-seoadmin-id";
+      userRole = "seoadmin";
+      userData = { name: "SEO ADMIN", email: process.env.SEO_EMAIL, phone: "N/A", role: "seoadmin" };
+    }
+    // 3. Database Check
+    else {
+      const user = await User.findOne({ email });
+      if (!user || !(await user.comparePassword(password))) {
+        return res.status(401).json({ message: 'Invalid email or password.' });
+      }
+      userId = user._id;
+      userRole = user.role;
+      userData = { name: user.name, email: user.email, phone: user.phone, role: user.role };
     }
 
-    const token = generateToken(user._id);
+    // Token Generation
+    const token = generateToken(userId, userRole);
+
+    // Set Token in HttpOnly Cookie
+    res.cookie("token", token, {
+      httpOnly: true, // XSS Attack protection (Frontend JS ise read/steal nahi kar sakti)
+      secure: false,  // Development me false rakhein, production (https) me true
+      maxAge: 24 * 60 * 60 * 1000 // 1 din ki expiry
+    });
     
-    // Response me user object ke sath user.phone ko bhi bhej diya hai taaki frontend use use kar sake
+    // Frontend dynamic use ke liye response
     res.status(200).json({ 
       message: 'Login successful!', 
-      token, 
-      user: { 
-        name: user.name, 
-        email: user.email,
-        phone: user.phone 
-      } 
+      user: userData 
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
-    next(error);
   }
 };
 
-// 3. FORGOT PASSWORD
-export const forgotPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ message: 'Email is required.' });
-
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'No user found with this email.' });
-
-    const token = crypto.randomBytes(32).toString('hex');
-    
-    user.resetToken = token;
-    user.resetTokenExpiry = Date.now() + 3600000; // 1 hour
-    await user.save();
-
-    const resetUrl = `http://127.0.0.1:5500/frontend/reset-password.html?token=${token}`;
-
-    return res.status(200).json({ 
-      message: 'Reset token generated successfully!',
-      resetUrl 
-    });
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error', error: error.message });
-  }
-};
-
-// 4. RESET PASSWORD
-export const resetPassword = async (req, res) => {
-  try {
-    const { token } = req.params; 
-    const { password } = req.body;
-
-    if (!password) {
-      return res.status(400).json({ message: 'New password is required.' });
-    }
-
-    const user = await User.findOne({ resetToken: token });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid token. User not found with this token.' });
-    }
-
-    if (user.resetTokenExpiry && user.resetTokenExpiry < Date.now()) {
-      return res.status(400).json({ 
-        message: 'Token has expired.', 
-        expiryTime: user.resetTokenExpiry, 
-        currentTime: Date.now() 
-      });
-    }
-
-    user.password = password;
-    user.resetToken = undefined;
-    user.resetTokenExpiry = undefined;
-    
-    await user.save();
-
-    return res.status(200).json({ message: 'Password reset successful!' });
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error', error: error.message });
-  }
+// Logout Controller to clear cookie
+export const logout = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
 };

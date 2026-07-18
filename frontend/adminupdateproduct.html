@@ -21,19 +21,20 @@
         <aside class="bg-gray-800 text-gray-300 w-64 min-h-full p-4 flex flex-col justify-between shrink-0">
             <nav class="w-full">
                 <ul class="space-y-2">
-                    <li>
-                        <a href="./dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-chart-line"></i> Dashboard
-                        </a>
-                    </li>
+                   
                     <li>
                         <a href="./adminproduct.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-gray-700 text-white font-medium">
                             <i class="fa-solid fa-box"></i> Product
                         </a>
                     </li>
                     <li>
-                        <a href="./navbar.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-compass"></i> Navigation
+                        <a href="./adminleadshow.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-gray-700 transition">
+                            <i class="fa-solid fa-compass"></i> Lead Show
+                        </a>
+                    </li>
+                     <li>
+                        <a href="./adminUserquery.html" class="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-gray-700 text-white font-medium">
+                            <i class="fa-solid fa-compass"></i> User Query
                         </a>
                     </li>
                 </ul>
@@ -131,5 +132,36 @@
     </div>
 
     <script type="module" src="./js/adminupdateproduct.js"></script>
+     <script>
+        (function () {
+            const userStr = localStorage.getItem("user");
+            if (!userStr) {
+                alert("Access Denied! Login zaroori hai.");
+                window.location.href = "./login.html";
+                return;
+            }
+            try {
+                const user = JSON.parse(userStr);
+                if (user.role !== "admin") {
+                    alert("Unauthorized! Sirf Main Admin hi is page par aa sakta hai.");
+                    window.location.href = "./index.html";
+                    return;
+                }
+            } catch (e) {
+                localStorage.clear();
+                window.location.href = "./login.html";
+                return;
+            }
+
+            // FIX: Logout Click Handler Logic
+            const logoutBtn = document.getElementById("adminLogoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function() {
+                    localStorage.clear(); // Poora storage clean karega (user details aur tokens)
+                    window.location.href = "./login.html"; // Redirect to login page
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

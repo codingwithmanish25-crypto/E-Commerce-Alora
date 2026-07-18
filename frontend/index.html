@@ -61,7 +61,10 @@
             background-size: 10px 1.5px;
             background-repeat: repeat-x;
         }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         details summary::-webkit-details-marker { display: none; }
+        
 
         @keyframes appear{
             from{
@@ -201,35 +204,55 @@
    <div id="slider-track" class="flex w-full h-full transition-transform duration-700 ease-in-out">
     
     <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/finalbanner.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+        <img src="./static/alora6.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
     </a>
     
     <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/banneralora.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+        <img src="./static/alora2.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
     </a>
 
     <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/Renewagain.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+        <img src="./static/alora3.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
     </a>
 
     <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/newbannerforalora.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
-    </a>
-
-    <!-- <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/lastbanner.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
-    </a> -->
-
-    <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/Facewash.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+        <img src="./static/alora4.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
     </a>
 
     <a href="./moreproduct.html" class="w-full shrink-0 block">
-        <img src="./static/craetenewbanner.png" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+        <img src="./static/alora5.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
+    </a>
+
+    <a href="./moreproduct.html" class="w-full shrink-0 block">
+        <img src="./static/alora1.jpg" alt="" class="w-full h-[13vh] md:h-[60vh] object-cover">
     </a>
 
 </div>
 </div>
+
+ <!-- ============ FEATURED PRODUCTS ============ -->
+    <section id="featured" class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">The Collection</p>
+                <h2 class="text-3xl font-robot  font-medium text-ink">Featured Products</h2>
+            </div>
+            <div class="flex gap-2">
+                <button type="button" onclick="slideProducts('left')" class="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-parchment text-ink transition">
+                    <i class="fa-solid fa-chevron-left text-sm"></i>
+                </button>
+                <button type="button" onclick="slideProducts('right')" class="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-parchment text-ink transition">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="greensection overflow-hidden w-full py-4">
+            <div id="productSliderWrapper" class="flex gap-6 transition-transform duration-500 ease-out" style="transform: translateX(0px);">
+                <!-- Product cards are injected here dynamically by loadSliderProducts() in main.js -->
+            </div>
+        </div>
+    </section>
 
     <!-- ============ HERO ============ -->
     <header class="max-w-7xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-12 items-center">
@@ -258,14 +281,29 @@
                 </div>
             </div>
         </div>
-        <div class="animate__animated animate__fadeInRight flex justify-center ">
-            <div class="relative bg-white p-3 rounded-2xl shadow-xl border border-[#EAE3CF] w-full max-w-md">
-                
-                <div class="bg-sage-light rounded-xl p-10 label-perforation">
-                    <img src="./static/product4.png" alt="Alora" class="rounded-lg shadow-lg transform hover:scale-105 transition duration-500">
-                </div>
-            </div>
+        <div class="animate__animated animate__fadeInRight flex justify-center">
+    <div class="relative bg-white p-3 rounded-2xl shadow-xl border border-[#EAE3CF] w-full max-w-md overflow-hidden">
+        
+        <!-- Main dynamic snapping slider layout container -->
+        <div id="auto-slider" class="bg-sage-light rounded-xl p-6 flex overflow-x-auto scroll-smooth snap-x snap-mandatory gap-10 no-scrollbar">
+            
+            <!-- FIXED: w-full, flex-shrink-0, and snap-center moved onto the <a> tags -->
+            <a href="./moreproduct.html" class="w-full flex-shrink-0 snap-center block">
+                <img src="./static/combo1.jpeg" alt="Alora" class="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition duration-500">
+            </a>
+            <a href="./moreproduct.html" class="w-full flex-shrink-0 snap-center block">
+                <img src="./static/combo2.jpeg" alt="Alora" class="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition duration-500">
+            </a>
+            <a href="./moreproduct.html" class="w-full flex-shrink-0 snap-center block">
+                <img src="./static/combo3.jpeg" alt="Alora" class="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition duration-500">
+            </a>
+            <a href="./moreproduct.html" class="w-full flex-shrink-0 snap-center block">
+                <img src="./static/combo4.jpeg" alt="Alora" class="w-full h-auto rounded-lg shadow-lg transform hover:scale-105 transition duration-500">
+            </a>
+            
         </div>
+    </div>
+</div>
     </header>
 
     <!-- ============ SHOP BY CATEGORY ============ -->
@@ -297,321 +335,7 @@
         </div>
     </section>
 
-    <!-- ============ FEATURED PRODUCTS ============ -->
-    <section id="featured" class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-end mb-10">
-            <div>
-                <p class="text-xs font-bold tracking-[0.25em] uppercase text-clay mb-2">The Collection</p>
-                <h2 class="text-3xl font-robot  font-medium text-ink">Featured Products</h2>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="slideProducts('left')" class="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-parchment text-ink transition">
-                    <i class="fa-solid fa-chevron-left text-sm"></i>
-                </button>
-                <button onclick="slideProducts('right')" class="w-11 h-11 rounded-full border border-ink/15 flex items-center justify-center hover:bg-ink hover:text-parchment text-ink transition">
-                    <i class="fa-solid fa-chevron-right text-sm"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="greensection overflow-hidden w-full py-4 ">
-            <div id="productSliderWrapper" class="flex  gap-6 transition-transform duration-500 ease-out style-none" style="transform: translateX(0px);">
-
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="./static/product3.png" alt="Brightening & Hydrating Face Serum" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
-
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">Brightening & Hydrating Face Serum</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            Enriched with pure Saffron, Moisturizer & Retinol for an instant, radiant glow.
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-             <button onclick="changeCardSize('100ml', 350, 500, this)" 
-             class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-            <button onclick="changeCardSize('200ml', 600, 850, this)" 
-             class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">₹500</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37] gap-0.5">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-                </div>
-
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="./static/product2.png" alt="Brightening & Hydrating Face Serum" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
-
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">Brightening & Hydrating Face Serum</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            Enriched with pure Saffron, Moisturizer & Retinol for an instant, radiant glow.
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-               <button onclick="changeCardSize('100ml', 350, 500, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-<button onclick="changeCardSize('200ml', 600, 850, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">₹500</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37] gap-0.5">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-                </div>
-
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="./static/products.png" alt="Brightening & Hydrating Face Serum" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
-
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">Brightening & Hydrating Face Serum</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            Enriched with pure Saffron, Moisturizer & Retinol for an instant, radiant glow.
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-               <button onclick="changeCardSize('100ml', 350, 500, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-<button onclick="changeCardSize('200ml', 600, 850, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">₹500</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37] gap-0.5">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-                </div>
-
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="./static/product4.png" alt="Brightening & Hydrating Face Serum" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
-
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">Brightening & Hydrating Face Serum</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            Enriched with pure Saffron, Moisturizer & Retinol for an instant, radiant glow.
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-                <button onclick="changeCardSize('100ml', 350, 500, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-<button onclick="changeCardSize('200ml', 600, 850, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">₹500</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37] gap-0.5">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-                </div>
-
-                <div class="relative w-full sm:w-[calc(50%-12px)] md:w-[calc(25%-18px)] h-[460px] flex-shrink-0 product-card bg-white rounded-2xl shadow-sm border border-[#ECE4CE] flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate__animated animate__fadeInUp overflow-hidden">
-    
-    <span class="absolute top-3 left-3 z-10 text-[9px] font-bold tracking-wider w-9 h-9 bg-black uppercase text-white rounded-full flex items-center justify-center shadow-md">
-        New
-    </span>
-  
-    <div class="mx-4 mt-4 rounded-xl flex justify-center h-[180px] items-center overflow-hidden relative">
-        <a href="./product.html" class="block w-full h-[180px]">
-            <img src="./static/product5.png" alt="Brightening & Hydrating Face Serum" class="w-full h-full object-contain transition-transform duration-300 hover:scale-110">
-        </a>
-    </div>
-
-    <div class="px-4 flex-1 flex flex-col justify-center">
-        <h3 class="text-base font-robot font-medium text-ink text-center leading-snug capitalize">Brightening & Hydrating Face Serum</h3>
-        <p class="text-xs text-ash text-center font-robot mt-1 px-2 line-clamp-2 min-h-[2rem]">
-            Enriched with pure Saffron, Moisturizer & Retinol for an instant, radiant glow.
-        </p>
-
-        <div class="flex items-center justify-center gap-3 mt-3 flex-wrap">
-            <div class="flex gap-1.5 items-center">
-                <button onclick="changeCardSize('100ml', 350, 500, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-ink bg-ink text-parchment font-medium transition">100ml</button>
-<button onclick="changeCardSize('200ml', 600, 850, this)" 
-    class="size-btn text-xs px-2.5 py-1 rounded-full border border-[#DCD3BA] text-ash hover:border-ink transition">200ml</button>
-            </div>
-            <div class="flex items-center gap-1.5">
-                <span class="product-price font-serif font-semibold text-ink text-lg">₹350</span>
-                <span class="product-mrp text-xs line-through text-ash opacity-70">₹500</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="px-4 mb-3">
-        <p class="text-[10px] font-bold text-ash uppercase tracking-[0.2em] mb-1 text-center">Quantity</p>
-        <div class="flex text-gold text-[11px] justify-center items-center gap-1 mb-2">
-            <span class="text-black text-xs font-medium">(5)</span>
-            <div class="flex text-[#D4AF37] gap-0.5">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-        </div>
-
-        <div class="flex items-center border border-[#DCD3BA] w-full rounded-lg overflow-hidden bg-white shadow-sm">
-            <button onclick="updateQty(-1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-r border-[#DCD3BA]">−</button>
-            <input type="number" class="quantity flex-1 h-8 text-center font-semibold text-ink focus:outline-none text-sm min-w-0 bg-transparent" value="1" min="1" readonly>
-            <button onclick="updateQty(1, this)" class="w-11 h-8 bg-[#FAF7EE] text-ink hover:bg-[#F1EBD7] font-bold transition flex items-center justify-center select-none border-l border-[#DCD3BA]">+</button>
-        </div>
-    </div>
-
-    <button id="cart-toggle-btn" onclick="toggleCartState(this)" class="w-full bg-[#A0522D] hover:bg-[#8B4513] text-white py-3.5 font-semibold text-xs tracking-[0.15em] uppercase transition flex items-center justify-center gap-2 mt-auto">
-        <i class="fa-solid fa-cart-shopping text-xs"></i> Add to Cart
-    </button>
-                </div>
-
-                <!-- ===== PRODUCT CARD (repeated) ===== -->
-                <div class="overflow-hidden relative w-full">
-                    <div id="productSliderWrapper" class="flex gap-6 transition-transform duration-500 ease-in-out">
-                  </div>
-            </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============ TRUST STRIP ============ -->
+   
 
 
     <!-- ============ TOXIN-FREE PROMISE ============ -->
@@ -1053,14 +777,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" integrity="sha512-P2IDYZfqSwjcSjX0BKeNhwRUH8zRPGlgcWl5n6gBLzdi4Y5/0O4zaXrtO4K9TZK6Hn1BenYpKowuCavNandERg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./js/include.js"></script>
+    <!-- main.js is a module (it uses `import BASE_URL from "./config.js"`),
+         so it must ONLY be loaded once, with type="module".
+         Loading it a second time as a classic script previously broke
+         everything: the import syntax threw a fatal error in that copy,
+         and even the working module copy doesn't expose its functions
+         to window on its own (module scope != global scope) — that's
+         why quantity +/- and the product carousel buttons stopped
+         responding. main.js now explicitly attaches those functions
+         to window itself, so this single tag is all that's needed. -->
     <script type="module" src="./js/main.js"></script>
     <script src="./js/cart.js"></script>
     <script type="module" src="./js/auth.js"></script>
-    
     <script type="module" src="./js/app.js"></script>
-
-
-
     <script type="module" src="./js/lead.js"></script>
     <script>
         // Modal ko background me dynamically pull karne ke liye script
@@ -1069,8 +798,7 @@
             .then(htmlContent => {
                 document.getElementById('lead-modal-container').innerHTML = htmlContent;
             })
-            .catch
-        </script>
+            .catch(err => console.error('Lead modal load failed:', err));
+    </script>
 </body>
 </html>
-
